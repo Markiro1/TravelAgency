@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7587c44-3e92-4a4d-a1c6-566d25a95f0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/AppContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/WebAppInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/WebMvcConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/database.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+    <list default="true" id="a7587c44-3e92-4a4d-a1c6-566d25a95f0c" name="Changes" comment="pom.xml updated and configuration classes added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,11 +230,23 @@
       <workItem from="1671524300512" duration="609000" />
       <workItem from="1671526137144" duration="680000" />
       <workItem from="1671608606088" duration="7951000" />
-      <workItem from="1671618963526" duration="687000" />
+      <workItem from="1671618963526" duration="1355000" />
     </task>
+    <task id="LOCAL-00001" summary="pom.xml updated and configuration classes added">
+      <created>1671619925522</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1671619925522</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="pom.xml updated and configuration classes added" />
+    <option name="LAST_COMMIT_MESSAGE" value="pom.xml updated and configuration classes added" />
   </component>
 </project>
