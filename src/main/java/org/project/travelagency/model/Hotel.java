@@ -1,6 +1,5 @@
 package org.project.travelagency.model;
 
-
 import lombok.*;
 
 import javax.persistence.*;
