@@ -1,7 +1,8 @@
 package org.project.travelagency.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "rooms")
