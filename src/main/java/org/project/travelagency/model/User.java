@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private String username;
 
     @Pattern(regexp = "[A-Z][a-z]+", message = "Must start with a capital letter")
-    @Column(name = "firstname", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastName;
 
     @Email(message = "Invalid email")
