@@ -10,11 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7587c44-3e92-4a4d-a1c6-566d25a95f0c" name="Changes" comment="pom.xml updated and configuration classes added">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/WebAppInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/WebAppInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/project/travelagency/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/project/travelagency/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/AppContext.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/HibernateConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/project/travelagency/config/HibernateConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +23,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -73,9 +71,9 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
     "spring.configuration.checksum": "1e172d47f51675d2696dacab927f0ec9",
     "vue.rearranger.settings.migration": "true"
   },
@@ -99,7 +97,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.70">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.67">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -156,7 +154,7 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="Tomcat 9.0.70" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.70" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+    <configuration name="Tomcat 9.0.67" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.67" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="TravelAgency:war exploded">
@@ -167,7 +165,6 @@
       </deployment>
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="74d71848-edc7-4b8f-9f96-0cf11c7005f5" />
-        <option name="HTTP_PORT" value="8081" />
       </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
       <predefined_log_file enabled="true" id="Tomcat Catalina" />
@@ -246,7 +243,7 @@
     </configuration>
     <list>
       <item itemvalue="Maven.TravelAgency [clean]" />
-      <item itemvalue="Tomcat Server.Tomcat 9.0.70" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.67" />
     </list>
     <recent_temporary>
       <list>
@@ -270,7 +267,6 @@
       <workItem from="1671648565029" duration="2458000" />
       <workItem from="1671651244459" duration="3134000" />
       <workItem from="1671695161955" duration="3540000" />
-      <workItem from="1671700532855" duration="4255000" />
     </task>
     <task id="LOCAL-00001" summary="pom.xml updated and configuration classes added">
       <created>1671619925522</created>
