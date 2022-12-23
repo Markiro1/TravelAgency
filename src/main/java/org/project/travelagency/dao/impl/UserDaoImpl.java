@@ -22,7 +22,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        User user = session.createQuery("SELECT u FROM User u WHERE u.email=: email", User.class)
+                .setParameter("email", email).getSingleResult();
+        session.getTransaction().commit();
+
+        return Optional.of(user);
     }
 
     @Override

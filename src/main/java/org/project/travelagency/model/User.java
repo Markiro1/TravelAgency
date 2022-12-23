@@ -45,16 +45,20 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @Column(name = "account_non_expired")
+    //@Column(name = "account_non_expired")
+    @Transient
     private boolean accountNonExpired;
 
-    @Column(name = "account_non_locked")
+    //@Column(name = "account_non_locked")
+    @Transient
     private boolean accountNonLocked;
 
-    @Column(name = "credentials_non_expired")
+    //@Column(name = "credentials_non_expired")
+    @Transient
     private boolean credentialsNonExpired;
 
-    @Column(name = "enabled")
+    //@Column(name = "enabled")
+    @Transient
     private boolean enabled;
 
     @Override
