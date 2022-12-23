@@ -41,6 +41,10 @@ public class Order {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "order")
+    @ManyToMany
+    @JoinTable(name = "order_rooms",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> rooms;
+
 }
