@@ -23,11 +23,11 @@ public class HibernateConfig {
 
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "org.postgresql.Driver");
-                settings.put(Environment.URL, "jdbc:postgresql://localhost:8080/travelAgency");
+                settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/travelagency");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
 
                 settings.put(Environment.USER, "postgres");
-                settings.put(Environment.PASS, "123");
+                settings.put(Environment.PASS, "root");
 
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.FORMAT_SQL, "true");
@@ -39,7 +39,6 @@ public class HibernateConfig {
                 configuration.addAnnotatedClass(User.class)
                         .addAnnotatedClass(Hotel.class)
                         .addAnnotatedClass(Order.class)
-                        .addAnnotatedClass(Role.class) //????
                         .addAnnotatedClass(Room.class);
 
                 sessionFactory = configuration.buildSessionFactory();
