@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface HotelService {
 
-    Hotel create(Hotel hotel);
+    void create(Hotel hotel);
 
     Hotel readById(Long id);
 

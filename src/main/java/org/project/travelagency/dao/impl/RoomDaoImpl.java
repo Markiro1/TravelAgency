@@ -4,8 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.project.travelagency.config.HibernateConfig;
-import org.project.travelagency.dao.HotelDao;
-import org.project.travelagency.model.Hotel;
+import org.project.travelagency.dao.RoomDao;
+
+import org.project.travelagency.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,31 +18,31 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public class HotelDaoImpl implements HotelDao {
+public class RoomDaoImpl implements RoomDao {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public HotelDaoImpl() {
+    public RoomDaoImpl() {
         this.sessionFactory = HibernateConfig.getSessionFactory();
     }
 
     @Override
-    public void create(Hotel hotel) {
+    public void create(Room room) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.save(hotel);
+        session.save(room);
         transaction.commit();
     }
 
     @Override
-    public Optional<Hotel> readById(Long id) {
+    public Optional<Room> readById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            Hotel hotel = session.get(Hotel.class, id);
-            return Optional.of(hotel);
+            Room room = session.get(Room.class, id);
+            return Optional.of(room);
 
         } catch (NullPointerException exp) {
             return Optional.empty();
@@ -52,12 +53,12 @@ public class HotelDaoImpl implements HotelDao {
     }
 
     @Override
-    public List<Hotel> getAllHotels() {
+    public List<Room> getAllRooms() {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            return session.createQuery("from Hotel h").getResultList();
+            return session.createQuery("from Room r").getResultList();
 
         } catch (NullPointerException e) {
             return new ArrayList<>();
@@ -68,19 +69,19 @@ public class HotelDaoImpl implements HotelDao {
     }
 
     @Override
-    public Optional<Hotel> getHotelByName(String name) {
+    public Optional<Room> getRoomByNumber(int number) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try {
             Query query = session
-                    .createQuery("FROM Hotel H WHERE H.name = :name")
-                    .setParameter("name", name);
+                    .createQuery("FROM Room R WHERE R.number = :number")
+                    .setParameter("number", number);
 
             if (query.getResultList().isEmpty()) {
                 return Optional.empty();
             }
-            return Optional.of((Hotel) query.getResultList().get(0));
+            return Optional.of((Room) query.getResultList().get(0));
 
         } catch (NullPointerException exp) {
             return Optional.empty();
@@ -94,8 +95,8 @@ public class HotelDaoImpl implements HotelDao {
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Hotel hotel = session.find(Hotel.class, id);
-        session.remove(hotel);
+        Room room = session.find(Room.class, id);
+        session.remove(room);
         transaction.commit();
     }
 }
