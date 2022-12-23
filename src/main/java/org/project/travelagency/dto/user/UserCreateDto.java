@@ -14,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class UserCreateDto {
 
+    private  Long id;
     private String username;
     private String lastname;
     private String email;
@@ -26,11 +27,11 @@ public class UserCreateDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCreateDto userDto = (UserCreateDto) o;
-        return email.equals(userDto.email) && password.equals(userDto.password);
+        return email.equals(userDto.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password);
+        return Objects.hash(email);
     }
 }
