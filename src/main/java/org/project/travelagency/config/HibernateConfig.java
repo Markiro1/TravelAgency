@@ -1,7 +1,9 @@
 package org.project.travelagency.config;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
+import org.hibernate.service.ServiceRegistry;
 import org.project.travelagency.model.*;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,10 @@ public class HibernateConfig {
                         .addAnnotatedClass(Hotel.class)
                         .addAnnotatedClass(Order.class)
                         .addAnnotatedClass(Room.class);
+
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties()).build();
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
                 sessionFactory = configuration.buildSessionFactory();
             } catch (Exception e) {
