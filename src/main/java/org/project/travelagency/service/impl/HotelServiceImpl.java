@@ -1,6 +1,8 @@
 package org.project.travelagency.service.impl;
 
 import org.project.travelagency.dao.HotelDao;
+import org.project.travelagency.exception.HotelNotFoundException;
+import org.project.travelagency.exception.SuchHotelExistsException;
 import org.project.travelagency.model.Hotel;
 import org.project.travelagency.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +21,33 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel create(Hotel hotel) {
-        return hotelDao.create(hotel);
+    public void create(Hotel hotel) {
+        if (hotelDao.getAllHotels()
+                .stream()
+                .anyMatch(h -> hotel.getName().equalsIgnoreCase(h.getName())))
+            throw new SuchHotelExistsException();
+
+        hotelDao.create(hotel);
     }
 
     @Override
     public Hotel readById(Long id) {
-        return hotelDao.readById(id);
+        return hotelDao.readById(id).orElseThrow(HotelNotFoundException::new);
     }
 
     @Override
     public List<Hotel> getAllHotels() {
-        return null;
+        return hotelDao.getAllHotels();
     }
 
     @Override
     public Hotel getHotelByName(String name) {
-        return null;
+        return hotelDao.getHotelByName(name).orElseThrow(HotelNotFoundException::new);
     }
 
     @Override
     public void delete(Long id) {
-
+        var hotel = hotelDao.readById(id).orElseThrow(HotelNotFoundException::new);
+        hotelDao.delete(hotel.getId());
     }
 }

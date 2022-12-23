@@ -24,11 +24,11 @@ public class Hotel {
     @Column(name = "name")
     private String name;
 
-    @Pattern(regexp = "", message = "Invalid country name")
+    @Pattern(regexp = "UKR|GBR|USA", message = "Invalid country name")
     @Column(name = "country")
     private String country;
 
-    @Pattern(regexp = "", message = "Invalid city name")
+    @Pattern(regexp = "Kyiv|London|Washigton", message = "Invalid city name")
     @Column(name = "city")
     private String city;
 
