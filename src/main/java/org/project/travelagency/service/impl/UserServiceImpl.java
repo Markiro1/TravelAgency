@@ -17,17 +17,16 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void addUser(UserCreateDto userDto) {
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(userDto.getPassword());
         userDto.setRole(Role.USER);
 
         User user = UserCreateMapper.mapToModel(userDto);
@@ -37,9 +36,25 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findUserByEmail(String email) {
         return userDao.findByEmail(email);
     }
+//    private final PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
+//        this.userDao = userDao;
+//        this.passwordEncoder = passwordEncoder;
+//    }
+//
+//    @Override
+//    public void addUser(UserCreateDto userDto) {
+//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        userDto.setRole(Role.USER);
+//
+//        User user = UserCreateMapper.mapToModel(userDto);
+//        userDao.addUser(user);
+//    }
+//
+//    public Optional<User> findUserByEmail(String email) {
+//        return userDao.findByEmail(email);
+//    }
 
-    @Bean
-    public PasswordEncoder getEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
