@@ -2,6 +2,7 @@ package org.project.travelagency.model;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;

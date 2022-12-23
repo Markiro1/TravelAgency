@@ -24,9 +24,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void create(OrderDto orderDto) {
+    public Order create(OrderDto orderDto) {
         if (orderDto != null) {
-            orderDao.save(OrderMapper.mapToModel(orderDto));
+            Order order = OrderMapper.mapToModel(orderDto);
+            return orderDao.save(order);
         } else {
             throw new NullEntityReferenceException("Order cannot be 'null'");
         }
@@ -39,9 +40,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(OrderDto orderDto) {
+    public Order update(OrderDto orderDto) {
         if (orderDto != null) {
-            orderDao.update(OrderMapper.mapToModel(orderDto));
+            Order order = OrderMapper.mapToModel(orderDto);
+            return orderDao.update(order);
         } else {
             throw new NullEntityReferenceException("Order cannot be 'null'");
         }
@@ -58,12 +60,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOders() {
+    public List<Order> getAllOrders() {
         return orderDao.getAll();
     }
 
     @Override
-    public List<Order> getByUserId(Long id) {
+    public List<Order> readByUserId(Long id) {
         return orderDao.getAll().stream().filter(o -> o.getUser().getId()==id).collect(Collectors.toList());
     }
 }
