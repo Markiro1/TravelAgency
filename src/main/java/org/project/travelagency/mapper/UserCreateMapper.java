@@ -7,8 +7,7 @@ public class UserCreateMapper {
 
     public static User mapToModel(UserCreateDto userDto) {
         return User.builder()
-                .id(userDto.getId())
-                .username(userDto.getUsername())
+                .firstName(userDto.getFirstname())
                 .lastName(userDto.getLastname())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
@@ -18,8 +17,7 @@ public class UserCreateMapper {
 
     public static UserCreateDto mapToDto(User user) {
         UserCreateDto userCreateDto = new UserCreateDto();
-        userCreateDto.setId(user.getId());
-        userCreateDto.setUsername(user.getUsername());
+        userCreateDto.setFirstname(user.getFirstName());
         userCreateDto.setLastname(user.getLastName());
         userCreateDto.setEmail(user.getEmail());
         userCreateDto.setPassword(user.getPassword());

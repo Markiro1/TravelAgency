@@ -2,9 +2,11 @@ package org.project.travelagency.service.impl;
 
 import org.project.travelagency.dao.UserDao;
 import org.project.travelagency.dto.user.UserCreateDto;
+import org.project.travelagency.dto.user.UserUpdateDto;
 import org.project.travelagency.exception.NullEntityReferenceException;
 import org.project.travelagency.mapper.OrderMapper;
 import org.project.travelagency.mapper.UserCreateMapper;
+import org.project.travelagency.mapper.UserUpdateMapper;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.model.Role;
 import org.project.travelagency.model.User;
@@ -45,9 +47,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(UserCreateDto userDto) {
+    public User update(UserUpdateDto userDto) {
         if (userDto != null) {
-            User user = UserCreateMapper.mapToModel(userDto);
+            User user = UserUpdateMapper.mapToModel(userDto);
             return userDao.update(user);
         } else {
             throw new NullEntityReferenceException("User cannot be 'null'");

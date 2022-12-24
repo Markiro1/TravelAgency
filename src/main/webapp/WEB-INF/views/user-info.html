@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Info Page</title>
+</head>
+<body>
+<div class="col-md-offset-2">
+    <div>
+        <h2>User Info</h2>
+        <table class="table">
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <b th:text="${user.id}"></b>
+                </td>
+            </tr>
+            <tr>
+                <td>First name:</td>
+                <td>
+                    <b th:text="${user.firstname}"></b>
+                </td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td>
+                    <b th:text="${user.lastname}"></b>
+                </td>
+            </tr>
+            <tr>
+                <td>E-mail:</td>
+                <td>
+                    <b th:text="${user.email}"></b>
+                </td>
+            </tr>
+            <tr>
+                <td>Role:</td>
+                <td>
+                    <b th:text="${user.role.name}"></b>
+                </td>
+            </tr>
+            <tr th:each="order, iStat: ${user.orders}">
+                <td th:text="${iStat.index + 1}"/>
+                <td th:text="${order.id}"/>
+                <td th:text="${order.hotel.name}"/>
+                <td th:text="${order.checkIn}"/>
+                <td th:text="${order.checkOut}"/>
+                <td>
+                    <a th:href="@{|/orders/${order.id}/delete/users/${user.id}|}">Remove Order</a>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <a class="btn btn-primary" role="button" th:href="@{|/users/${user.id}/update|}">Edit Info</a>
+            <a class="btn btn-primary" role="button" aria-disabled="true" th:href="@{|/users/${user.id}/delete|}">Remove Account</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

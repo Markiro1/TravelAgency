@@ -25,7 +25,7 @@ public class User implements UserDetails {
 
     @Pattern(regexp = "[A-Z][a-z]+", message = "Must start with a capital letter")
     @Column(name = "firstname", nullable = false)
-    private String username;
+    private String firstName;
 
     @Pattern(regexp = "[A-Z][a-z]+", message = "Must start with a capital letter")
     @Column(name = "lastname", nullable = false)
@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -64,6 +64,11 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
