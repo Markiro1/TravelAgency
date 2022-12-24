@@ -30,23 +30,25 @@ public class UserDaoImpl implements UserDao {
         User user = session.createQuery("SELECT u FROM User u WHERE u.email=: email", User.class)
                 .setParameter("email", email).getSingleResult();
         session.getTransaction().commit();
+        session.close();
 
         return Optional.of(user);
     }
 
     @Override
     public User save(User user) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.persist(user);
         session.getTransaction().commit();
+        session.close();
         return user;
     }
 
     @Override
     public void delete(User user) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        if (currentSession.isOpen()) currentSession.close();
+//        Session currentSession = sessionFactory.getCurrentSession();
+//        if (currentSession.isOpen()) currentSession.close();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(user);
@@ -56,24 +58,33 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User user) {
-        Session session = sessionFactory.getCurrentSession();
+//        Session currentSession = sessionFactory.getCurrentSession();
+//        if (currentSession.isOpen()) currentSession.close();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(user);
         session.getTransaction().commit();
+        session.close();
         return user;
     }
 
     @Override
     public User getById(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        return session.get(User.class, id);
+        User user = session.get(User.class, id);
+        session.getTransaction().commit();
+        session.close();
+        return user;
     }
 
     @Override
     public List<User> getAll() {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        return session.createQuery("from User").list();
+        List<User> users = session.createQuery("from User").list();
+        session.getTransaction().commit();
+        session.close();
+        return users;
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -35,7 +36,6 @@ public class UserController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("user", new UserCreateDto());
-        System.out.println("Get-create ok");
         return "create-user";
     }
 
@@ -44,12 +44,8 @@ public class UserController {
         if (result.hasErrors()) {
             return "create-user";
         }
-//        System.out.println("Post-create ok");
-//        System.out.println(userDto.getEmail());
         userDto.setRole(Role.USER);
-//        System.out.println(userDto.getRole());
         userService.create(userDto);
-//        System.out.println("Post-create ok");
         //return "home";
         return "user-info";
     }
@@ -66,11 +62,12 @@ public class UserController {
     public String update(@PathVariable("user_id") long userId, Model model,
                          @Validated @ModelAttribute("user") UserUpdateDto userDto,
                          BindingResult result) {
-        User oldUser = userService.readById(userId);
-
+        if (userDto.getPassword().isBlank()) {
+            userDto.setPassword(userService.readById(userId).getPassword());
+        }
         if (result.hasErrors()) {
-            userDto.setRole(oldUser.getRole());
-            model.addAttribute("user", userDto);
+            model.addAttribute("user", UserUpdateMapper.mapToDto(userService.readById(userId)));
+            model.addAttribute("roles", Role.values());
             return "update-user";
         }
         userService.update(userDto);
