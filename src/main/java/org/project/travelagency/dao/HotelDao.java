@@ -1,6 +1,5 @@
 package org.project.travelagency.dao;
 
-
 import org.project.travelagency.model.Hotel;
 
 import java.util.List;

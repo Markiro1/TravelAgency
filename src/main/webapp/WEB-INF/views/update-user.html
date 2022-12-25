@@ -1,64 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>Update Info</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Update User</title>
 </head>
 <body>
+
+<div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>Update Form</h2>
+
+    <h2>Update Existing User</h2>
 </div>
-<form class="form-horizontal" th:action="@{|/users/${user.id}/update|}" th:object="${user}" method="post">
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="first-name">First name:</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" th:field="*{firstname}" id="first-name" required/>
-            <small class="form-text text-muted" th:if="${#fields.hasErrors('firstname')}"
-                   th:errors="*{firstname}"></small>
+<div>
+    <form class="form-horizontal" method="post" th:action="@{/users/create}" th:object="${user}">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="id">ID:</label>
+            <div class="col-sm-4">
+                <input class="form-control" disabled id="id" type="text"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="last-name">Last name:</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" th:field="*{lastname}" id="last-name" required/>
-            <small class="form-text text-muted" th:if="${#fields.hasErrors('lastname')}"
-                   th:errors="*{lastname}"></small>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="first-name">First name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="first-name" th:field="*{firstname}" type="text"/>
+                <small class="form-text text-muted" th:if="${#fields.hasErrors('firstname')}"
+                       th:errors="*{firstname}"></small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="email">Email:</label>
-        <div class="col-sm-8">
-            <input type="email" class="form-control" th:field="*{email}" id="email" required/>
-            <small class="form-text text-muted" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="last-name">Last name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="last-name" th:field="*{lastname}" type="text"/>
+                <small class="form-text text-muted" th:if="${#fields.hasErrors('lastname')}"
+                       th:errors="*{lastname}"></small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="new password">New Password:</label>
-        <div class="col-sm-8">
-            <input type="password" class="form-control" th:field="*{password}" id="new password"/>
-            <small class="form-text text-muted" th:if="${#fields.hasErrors('password')}"
-                   th:errors="*{password}"></small>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="email">E-mail:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="email" th:field="*{email}" type="email"/>
+                <small class="form-text text-muted" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="role">Role:</label>
-        <div class="col-sm-8">
-            <select class="form-control" id="role" name="role">
-                        <span th:each="role : ${roles}">
-                                <option th:text="${role}" th:value="${role}" th:selected="${user.role==role}"/>
-                        </span>
-            </select>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="old-password">Old Password:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="old-password" name="oldPassword" required type="password"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-8">
-            <input type="submit" class="btn btn-info" value="Update"/>
-            <input type="reset" class="btn btn" value="Clear"/>
-            <input name="id" th:value="*{id}" type="hidden"/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="old-password">New Password:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="new-password" required th:field="*{password}" type="password"/>
+                <small class="form-text text-muted" th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}"></small>
+            </div>
         </div>
-    </div>
-    <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-</form>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="role">Role:</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="role" name="role">
+                    <option th:each="role : ${roles}" th:value="${role}" th:text="${role.name()
+                            .substring(0, 1) + role.name().substring(1).toLowerCase()}"/>
+                </select>
+            </div>
+
+            <div class="col-sm-offset-2 col-sm-8">
+                <br>
+                <br>
+                <input class="btn btn-info" type="submit" value="Update"/>
+                <input class="btn btn" type="reset" value="Clear"/>
+                <input name="id" th:value="*{id}" type="hidden"/>
+            </div>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>

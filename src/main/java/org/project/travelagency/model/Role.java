@@ -1,12 +1,5 @@
 package org.project.travelagency.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
-public enum Role implements GrantedAuthority {
+public enum Role {
     USER, MANAGER;
-
-    @Override
-    public String getAuthority() {
-        return name();
-    }
 }

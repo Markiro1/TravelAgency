@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
@@ -32,26 +31,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void delete(Order order) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        if (currentSession.isOpen()) currentSession.close();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.delete(order);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    @Override
-    public Order update(Order order) {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        session.update(order);
-        session.getTransaction().commit();
-        return order;
-    }
-
-    @Override
     public Order getById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
@@ -64,5 +43,25 @@ public class OrderDaoImpl implements OrderDao {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
         return session.createQuery("from Order").list();
+    }
+
+    @Override
+    public Order update(Order order) {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        session.update(order);
+        session.getTransaction().commit();
+        return order;
+    }
+
+    @Override
+    public void delete(Order order) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        if (currentSession.isOpen()) currentSession.close();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(order);
+        session.getTransaction().commit();
+        session.close();
     }
 }

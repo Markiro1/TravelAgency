@@ -6,7 +6,12 @@
     <title>Error Page</title>
 </head>
 <body>
-<h1 style="margin: 0 auto; width: max-content" th:text="${code}" />
-<h2 style="margin: 0 auto; width: max-content" th:text="${message}" />
+<div th:replace="header"></div>
+<div class="col-md-offset-2">
+    <h2>Something went wrong</h2>
+</div>
+<br>
+<h1 style="margin: 0 auto; width: max-content" th:text="${code}"/>
+<h2 style="margin: 0 auto; width: max-content" th:text="${message}"/>
 </body>
 </html>
