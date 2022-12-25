@@ -6,10 +6,16 @@ import org.project.travelagency.model.Order;
 import java.util.List;
 
 public interface OrderService {
+
     Order create(OrderDto orderDto);
-    void delete(Long id);
-    Order update(OrderDto orderDto);
+
     Order readById(Long id);
-    List<Order> getAllOrders();
+
     List<Order> readByUserId(Long id);
+
+    List<Order> getAllOrders();
+
+    Order update(OrderDto orderDto);
+
+    void delete(Long id);
 }

@@ -4,7 +4,6 @@ import org.project.travelagency.model.Room;
 
 import java.util.List;
 
-
 public interface RoomService {
 
     void create(Room room);

@@ -1,36 +1,27 @@
 package org.project.travelagency.controller;
 
-
-import org.project.travelagency.dao.impl.UserDaoImpl;
 import org.project.travelagency.dto.user.UserCreateDto;
 import org.project.travelagency.dto.user.UserUpdateDto;
-import org.project.travelagency.mapper.UserCreateMapper;
 import org.project.travelagency.mapper.UserUpdateMapper;
 import org.project.travelagency.model.Role;
 import org.project.travelagency.model.User;
 import org.project.travelagency.service.UserService;
-import org.project.travelagency.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/{user_id}/read")
-    public String read(@PathVariable("user_id") long userId, Model model) {
-        User user = userService.readById(userId);
-        model.addAttribute("user", UserUpdateMapper.mapToDto(user));
-        return "user-info";
     }
 
     @GetMapping("/create")
@@ -40,14 +31,28 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String create(@Validated @ModelAttribute("user") UserCreateDto userDto, BindingResult result) {
+    public String create(@Validated @ModelAttribute("user") UserCreateDto userDto, Model model, BindingResult result) {
         if (result.hasErrors()) {
             return "create-user";
         }
         userDto.setRole(Role.USER);
-        userService.create(userDto);
-        //return "home";
+        User u = userService.create(userDto);
+        User user = userService.readById(u.getId());
+        model.addAttribute("user", UserUpdateMapper.mapToDto(user));
         return "user-info";
+    }
+
+    @GetMapping("/{user_id}/read")
+    public String read(@PathVariable("user_id") long userId, Model model) {
+        User user = userService.readById(userId);
+        model.addAttribute("user", UserUpdateMapper.mapToDto(user));
+        return "user-info";
+    }
+
+    @GetMapping("/all")
+    public String getAll(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users-list";
     }
 
     @GetMapping("/{user_id}/update")
@@ -79,36 +84,4 @@ public class UserController {
         userService.delete(userId);
         return "redirect:/login";
     }
-
-
-    @GetMapping("/all")
-    public String getAll(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users-list";
-    }
-
-/*        public static void main(String[] args) {
-        UserDaoImpl userDao = new UserDaoImpl();
-        UserServiceImpl userService = new UserServiceImpl(userDao);
-
-        UserCreateDto userDto = new UserCreateDto();
-
-        userDto.setFirstname("User2");
-        userDto.setLastname("Test2");
-        userDto.setEmail("user2@gmail.com");
-        userDto.setPassword("Qwerty_123");
-        userDto.setRole(Role.MANAGER);
-
-        userService.create(userDto);
-//        System.out.println(userService.readById(1L).getEmail());
-//
-//            userDto.setId(1L);
-//            userDto.setRole(Role.MANAGER);
-//            userService.update(userDto);
-//
-//        System.out.println(userService.getAllUsers().get(0).getEmail());
-
-//            userService.delete(1L);
-    }*/
-
 }

@@ -1,7 +1,6 @@
 package org.project.travelagency.service.impl;
 
 import org.project.travelagency.dao.OrderDao;
-import org.project.travelagency.dao.impl.OrderDaoImpl;
 import org.project.travelagency.dto.order.OrderDto;
 import org.project.travelagency.exception.NullEntityReferenceException;
 import org.project.travelagency.mapper.OrderMapper;
@@ -34,9 +33,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delete(Long id) {
-        Order order = readById(id);
-        orderDao.delete(order);
+    public Order readById(Long id) {
+        Order order = orderDao.getById(id);
+        if (order != null) {
+            return order;
+        } else {
+            throw new NullEntityReferenceException("Order not found");
+        }
+    }
+
+    @Override
+    public List<Order> readByUserId(Long id) {
+        return orderDao.getAll().stream().filter(o -> o.getUser().getId() == id).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Order> getAllOrders() {
+        return orderDao.getAll();
     }
 
     @Override
@@ -50,22 +63,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order readById(Long id) {
-        Order order = orderDao.getById(id);
-        if (order != null) {
-            return order;
-        } else {
-            throw new NullEntityReferenceException("Order not found");
-        }
-    }
-
-    @Override
-    public List<Order> getAllOrders() {
-        return orderDao.getAll();
-    }
-
-    @Override
-    public List<Order> readByUserId(Long id) {
-        return orderDao.getAll().stream().filter(o -> o.getUser().getId()==id).collect(Collectors.toList());
+    public void delete(Long id) {
+        Order order = readById(id);
+        orderDao.delete(order);
     }
 }

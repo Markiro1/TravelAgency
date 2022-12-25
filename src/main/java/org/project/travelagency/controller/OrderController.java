@@ -1,15 +1,11 @@
 package org.project.travelagency.controller;
 
-import org.project.travelagency.dao.impl.HotelDaoImpl;
-import org.project.travelagency.dao.impl.OrderDaoImpl;
 import org.project.travelagency.dto.order.OrderDto;
 import org.project.travelagency.mapper.OrderMapper;
-import org.project.travelagency.model.Hotel;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.service.OrderService;
 import org.project.travelagency.service.UserService;
-import org.project.travelagency.service.impl.HotelServiceImpl;
-import org.project.travelagency.service.impl.OrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,19 +22,10 @@ public class OrderController {
     private final UserService userService;
     private final OrderService orderService;
 
-
+    @Autowired
     public OrderController(UserService userService, OrderService orderService) {
         this.userService = userService;
         this.orderService = orderService;
-    }
-
-
-    @GetMapping("/{order_id}/read/users/{user_id}")
-    public String read(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId, Model model) {
-        Order order = orderService.readByUserId(userId).stream().filter(o -> o.getId()==orderId).findFirst().get();
-        model.addAttribute("order", OrderMapper.mapToDto(order));
-        model.addAttribute("userId", userId);
-        return "order-info";
     }
 
     @GetMapping("/create/{user_id}")
@@ -59,6 +46,29 @@ public class OrderController {
         orderDto.setUser(userService.readById(userId));
         orderService.create(orderDto);
         return "order-info";
+    }
+
+    @GetMapping("/{order_id}/read/users/{user_id}")
+    public String read(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId, Model model) {
+        Order order = orderService.readByUserId(userId).stream().filter(o -> o.getId() == orderId).findFirst().get();
+        model.addAttribute("order", OrderMapper.mapToDto(order));
+        model.addAttribute("userId", userId);
+        return "order-info";
+    }
+
+    @GetMapping("/all/users/{user_id}")
+    public String getAllByUserId(@PathVariable("user_id") long userId, Model model) {
+        List<Order> orders = orderService.readByUserId(userId);
+        model.addAttribute("orders", orders);
+        model.addAttribute("user", userService.readById(userId));
+        return "orders-user";
+    }
+
+    @GetMapping("/all")
+    public String getAll(Model model) {
+        List<Order> orders = orderService.getAllOrders();
+        model.addAttribute("orders", orders);
+        return "orders-all";
     }
 
     @GetMapping("/{order_id}/update/users/{user_id}")
@@ -84,36 +94,4 @@ public class OrderController {
         orderService.delete(orderId);
         return "redirect:/orders/all/users/" + userId;
     }
-
-    @GetMapping("/all/users/{user_id}")
-    public String getAllByUserId(@PathVariable("user_id") long userId, Model model) {
-        List<Order> orders = orderService.readByUserId(userId);
-        model.addAttribute("orders", orders);
-        model.addAttribute("user", userService.readById(userId));
-        return "orders-user";
-    }
-
-    @GetMapping("/all")
-    public String getAll(Model model) {
-        List<Order> orders = orderService.getAllOrders();
-        model.addAttribute("orders", orders);
-        return "orders-all";
-    }
-
-/*    public static void main(String[] args) {
-        OrderDaoImpl orderDao = new OrderDaoImpl();
-        OrderServiceImpl orderService = new OrderServiceImpl(orderDao);
-        OrderDto orderDto = new OrderDto();
-        //orderDto.setOrderDate(LocalDateTime.now());
-        //orderService.create(orderDto);
-
-        //orderDto.setId(1L);
-        //orderService.update(orderDto);
-
-        //System.out.println(orderService.getAllOrders().get(0).getOrderDate());
-
-        //System.out.println(orderService.readById(5L).getOrderDate());
-
-        orderService.delete(1L);
-    }*/
 }

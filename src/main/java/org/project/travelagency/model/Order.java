@@ -2,7 +2,6 @@ package org.project.travelagency.model;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -47,5 +46,4 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> rooms;
-
 }

@@ -9,13 +9,12 @@ import org.project.travelagency.model.Role;
 import java.util.List;
 import java.util.Objects;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUpdateDto {
 
-    private  Long id;
+    private Long id;
     private String firstname;
     private String lastname;
     private String email;
