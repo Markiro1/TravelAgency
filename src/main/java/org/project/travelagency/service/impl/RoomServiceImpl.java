@@ -47,6 +47,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room update(Room room) {
+        return roomDao.update(room);
+    }
+
+    @Override
     public void delete(Long id) {
         var room = roomDao.readById(id).orElseThrow(RoomNotFoundException::new);
         roomDao.delete(room.getId());

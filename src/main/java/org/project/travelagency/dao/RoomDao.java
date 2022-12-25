@@ -15,5 +15,7 @@ public interface RoomDao {
 
     Optional<Room> getRoomByNumber(int number);
 
+    Room update(Room room);
+
     void delete(Long id);
 }
