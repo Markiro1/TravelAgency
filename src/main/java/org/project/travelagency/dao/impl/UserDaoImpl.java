@@ -25,6 +25,7 @@ public class UserDaoImpl implements UserDao {
     public User save(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
         session.persist(user);
         session.getTransaction().commit();
         session.close();
@@ -35,6 +36,7 @@ public class UserDaoImpl implements UserDao {
     public User getById(Long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
         User user = session.get(User.class, id);
         session.getTransaction().commit();
         session.close();
@@ -45,6 +47,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAll() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
         List<User> users = session.createQuery("from User").list();
         session.getTransaction().commit();
         session.close();
@@ -55,6 +58,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
         User user = session.createQuery("SELECT u FROM User u WHERE u.email=: email", User.class)
                 .setParameter("email", email).getSingleResult();
         session.getTransaction().commit();
@@ -67,6 +71,7 @@ public class UserDaoImpl implements UserDao {
     public User update(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
         session.update(user);
         session.getTransaction().commit();
         session.close();
@@ -77,6 +82,7 @@ public class UserDaoImpl implements UserDao {
     public void delete(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
         session.delete(user);
         session.getTransaction().commit();
         session.close();

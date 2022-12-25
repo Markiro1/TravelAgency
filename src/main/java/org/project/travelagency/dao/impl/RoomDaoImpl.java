@@ -2,17 +2,13 @@ package org.project.travelagency.dao.impl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.project.travelagency.config.HibernateConfig;
 import org.project.travelagency.dao.RoomDao;
-
 import org.project.travelagency.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,74 +25,67 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public void create(Room room) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(room);
-        transaction.commit();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        session.persist(room);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public Optional<Room> readById(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-        try {
-            Room room = session.get(Room.class, id);
-            return Optional.of(room);
-
-        } catch (NullPointerException exp) {
-            return Optional.empty();
-
-        } finally {
-            transaction.commit();
-        }
+        Room room = session.get(Room.class, id);
+        session.getTransaction().commit();
+        session.close();
+        return Optional.of(room);
     }
 
     @Override
     public List<Room> getAllRooms() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-        try {
-            return session.createQuery("from Room r").getResultList();
-
-        } catch (NullPointerException e) {
-            return new ArrayList<>();
-
-        } finally {
-            transaction.commit();
-        }
+        List<Room> rooms = session.createQuery("from Room ").list();
+        session.getTransaction().commit();
+        session.close();
+        return rooms;
     }
 
     @Override
     public Optional<Room> getRoomByNumber(int number) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-        try {
-            Query query = session
-                    .createQuery("FROM Room R WHERE R.number = :number")
-                    .setParameter("number", number);
+        Room room = session.createQuery("SELECT r FROM Room r WHERE r.number=: number", Room.class)
+                .setParameter("number", number).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return Optional.of(room);
+    }
 
-            if (query.getResultList().isEmpty()) {
-                return Optional.empty();
-            }
-            return Optional.of((Room) query.getResultList().get(0));
+    @Override
+    public Room update(Room room) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-        } catch (NullPointerException exp) {
-            return Optional.empty();
-
-        } finally {
-            transaction.commit();
-        }
+        session.update(room);
+        session.getTransaction().commit();
+        session.close();
+        return room;
     }
 
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
         Room room = session.find(Room.class, id);
-        session.remove(room);
-        transaction.commit();
+        session.delete(room);
+        session.getTransaction().commit();
+        session.close();
     }
 }

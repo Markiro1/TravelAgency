@@ -15,5 +15,11 @@ public interface HotelDao {
 
     Optional<Hotel> getHotelByName(String name);
 
+    List<Hotel> getHotelsByCountry(String country);
+
+    List<String> getAllCountries();
+
+    Hotel update(Hotel hotel);
+
     void delete(Long id);
 }

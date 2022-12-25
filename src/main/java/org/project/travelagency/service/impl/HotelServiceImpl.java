@@ -46,6 +46,21 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    public List<Hotel> getHotelsByCountry(String country) {
+        return hotelDao.getHotelsByCountry(country);
+    }
+
+    @Override
+    public List<String> getAllCountries() {
+        return hotelDao.getAllCountries();
+    }
+
+    @Override
+    public Hotel update(Hotel hotel) {
+        return hotelDao.update(hotel);
+    }
+
+    @Override
     public void delete(Long id) {
         var hotel = hotelDao.readById(id).orElseThrow(HotelNotFoundException::new);
         hotelDao.delete(hotel.getId());
