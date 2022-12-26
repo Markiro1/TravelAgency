@@ -4,16 +4,15 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.project.travelagency.config.HibernateConfig;
 import org.project.travelagency.dao.HotelDao;
+import org.project.travelagency.exception.HotelNotFoundException;
 import org.project.travelagency.model.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
 public class HotelDaoImpl implements HotelDao {
 
     private final SessionFactory sessionFactory;
@@ -24,13 +23,14 @@ public class HotelDaoImpl implements HotelDao {
     }
 
     @Override
-    public void create(Hotel hotel) {
+    public Hotel create(Hotel hotel) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         session.persist(hotel);
         session.getTransaction().commit();
         session.close();
+        return hotel;
     }
 
     @Override
@@ -49,7 +49,10 @@ public class HotelDaoImpl implements HotelDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Hotel> hotels = session.createQuery("from Hotel").list();
+        List<Hotel> hotels = session
+                .createQuery("from Hotel")
+                .list();
+
         session.getTransaction().commit();
         session.close();
         return hotels;
@@ -60,8 +63,11 @@ public class HotelDaoImpl implements HotelDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Hotel hotel = session.createQuery("SELECT h FROM Hotel h WHERE h.name=: name", Hotel.class)
-                .setParameter("name", name).getSingleResult();
+        Hotel hotel = session
+                .createQuery("SELECT h FROM Hotel h WHERE h.name=: name", Hotel.class)
+                .setParameter("name", name)
+                .getSingleResult();
+
         session.getTransaction().commit();
         session.close();
         return Optional.of(hotel);
@@ -72,8 +78,11 @@ public class HotelDaoImpl implements HotelDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Hotel> hotels = session.createQuery("from Hotel H where lower(H.country) like lower(:country)")
-                .setParameter("country", country).list();
+        List<Hotel> hotels = session
+                .createQuery("from Hotel H where lower(H.country) like lower(:country)")
+                .setParameter("country", country + "%")
+                .list();
+
         session.getTransaction().commit();
         session.close();
         return hotels;
@@ -84,7 +93,12 @@ public class HotelDaoImpl implements HotelDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<String> countries = session.createQuery("SELECT country from Hotel").list();
+        List<String> countries = session
+                .createQuery("SELECT country from Hotel")
+                .stream()
+                .distinct()
+                .toList();
+
         session.getTransaction().commit();
         session.close();
         return countries;
@@ -95,7 +109,12 @@ public class HotelDaoImpl implements HotelDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.update(hotel);
+        Hotel h = getHotelByName(hotel.getName()).orElseThrow(HotelNotFoundException::new);
+
+        h.setCountry(hotel.getCountry());
+        h.setCity(hotel.getCity());
+
+        session.update(h);
         session.getTransaction().commit();
         session.close();
         return hotel;

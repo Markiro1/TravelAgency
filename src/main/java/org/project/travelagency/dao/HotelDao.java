@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface HotelDao {
 
-    void create(Hotel hotel);
+    Hotel create(Hotel hotel);
 
     Optional<Hotel> readById(Long id);
 

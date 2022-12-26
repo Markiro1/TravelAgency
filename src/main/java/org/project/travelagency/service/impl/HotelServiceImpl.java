@@ -21,13 +21,13 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void create(Hotel hotel) {
+    public Hotel create(Hotel hotel) {
         if (hotelDao.getAllHotels()
                 .stream()
                 .anyMatch(h -> hotel.getName().equalsIgnoreCase(h.getName())))
             throw new SuchHotelExistsException();
 
-        hotelDao.create(hotel);
+        return hotelDao.create(hotel);
     }
 
     @Override

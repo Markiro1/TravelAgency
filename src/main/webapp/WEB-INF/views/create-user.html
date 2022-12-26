@@ -10,6 +10,7 @@
 <div class="col-md-offset-2">
     <h2> Registration Form</h2>
 </div>
+<br>
 <form class="form-horizontal" th:action="@{/users/create}" th:object="${user}" method="post">
     <div class="form-group">
         <label class="col-sm-2 control-label" for="first-name">First name:</label>
@@ -28,7 +29,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="last-name">Password:</label>
+        <label class="col-sm-2 control-label" for="password">Password:</label>
         <div class="col-sm-4">
             <input type="password" class="form-control" th:field="*{password}" id="password"/>
             <small class="form-text text-muted" th:if="${#fields.hasErrors('password')}"
