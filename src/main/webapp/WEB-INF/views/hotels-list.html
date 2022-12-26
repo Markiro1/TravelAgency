@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>List of Users</title>
+    <title>List of Hotels</title>
 </head>
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-8">
-    <h2>List of Users</h2>
-    <form th:action="@{/users/create}" method="get">
+    <h2>List of Hotels</h2>
+    <form th:action="@{/hotels/create}" method="get">
         <div align="right">
-            <input class="btn-info btn-lg" type="submit" value="Create new User">
+            <input class="btn-info btn-lg" type="submit" value="Create new Hotel">
         </div>
     </form>
     <br>
@@ -20,21 +20,23 @@
         <tr>
             <th scope="col">No.</th>
             <th scope="col">ID</th>
-            <th scope="col">Full name</th>
-            <th scope="col">E-mail</th>
+            <th scope="col">Hotel name</th>
+            <th scope="col">Country</th>
+            <th scope="col">City</th>
             <th scope="col" colspan="2">Operations</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, iStat: ${users}">
+        <tr th:each="hotel, iStat: ${hotels}">
             <th scope="row" th:text="${iStat.index + 1}"/>
-            <td th:text="${user.id}"/>
-            <td th:text="${user.firstName + ' ' + user.lastName}"/>
-            <td th:text="${user.email}"/>
+            <td th:text="${hotel.id}"/>
+            <td th:text="${hotel.name}"/>
+            <td th:text="${hotel.country}"/>
+            <td th:text="${hotel.city}"/>
 
             <div>
-                <td><a th:href="@{|/users/${user.id}/update|}">Edit</a></td>
-                <td><a th:href="@{|/users/${user.id}/delete|}">Remove</a></td>
+                <td><a th:href="@{|/hotels/${hotel.id}/update|}">Edit</a></td>
+                <td><a th:href="@{|/hotels/${hotel.id}/delete|}">Remove</a></td>
             </div>
         </tr>
     </table>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="header"></div>
+<div class="col-md-offset-2 col-sm-4">
+    <div>
+        <h2>Info about Hotel</h2>
+        <br>
+        <table class="table">
+            <tr>
+                <td>ID:</td>
+                <td><b th:text="${hotel.id}"></b></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><b th:text="${hotel.name}"></b></td>
+            </tr>
+            <tr>
+                <td>Country:</td>
+                <td><b th:text="${hotel.country}"></b></td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td><b th:text="${hotel.city}"></b></td>
+            </tr>
+
+        </table>
+        <div>
+            <td><a class="btn btn-info" th:href="@{|/hotels/${hotel.id}/update|}">Edit</a></td>
+            <td><a class="btn btn-info" style="margin-left: 5px" th:href="@{|/hotels/${hotel.id}/delete|}">Remove</a></td>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

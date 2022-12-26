@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Update Hotel</title>
+</head>
+<body>
+
+<div th:replace="header"></div>
+<div class="col-md-offset-2">
+
+    <h2>Update Existing Hotel</h2>
+</div>
+<br>
+<div>
+    <form class="form-horizontal" method="post" th:action="@{/hotels/create}" th:object="${hotel}">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="id">ID:</label>
+            <div class="col-sm-4">
+                <input class="form-control" disabled id="id" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="hotel-name">Hotel name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" disabled id="hotel-name" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="country">Country:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="country" th:field="*{country}" type="text"/>
+                <small class="form-text text-muted" th:if="${#fields.hasErrors('country')}"
+                       th:errors="*{country}"></small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="city">City:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="city" th:field="*{city}" type="text"/>
+                <small class="form-text text-muted" th:if="${#fields.hasErrors('city')}"
+                       th:errors="*{city}"></small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <br>
+                <br>
+                <input class="btn btn-info" type="submit" value="Update"/>
+                <input class="btn btn" type="reset" value="Clear"/>
+                <input name="id" th:value="*{id}" type="hidden"/>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
