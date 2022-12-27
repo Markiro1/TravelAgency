@@ -1,7 +1,6 @@
 package org.project.travelagency.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;

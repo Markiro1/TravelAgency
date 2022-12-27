@@ -25,7 +25,7 @@ public class RoomServiceImpl implements RoomService {
     public void create(Room room) {
         if (roomDao.getAllRooms()
                 .stream()
-                .anyMatch(r -> room.getNumber() == r.getNumber()))
+                .anyMatch(r -> room.getNumber().equals(r.getNumber())))
             throw new SuchRoomExistsException();
 
         roomDao.create(room);
@@ -45,7 +45,6 @@ public class RoomServiceImpl implements RoomService {
     public Room getRoomByNumber(int number) {
         return roomDao.getRoomByNumber(number).orElseThrow(RoomNotFoundException::new);
     }
-
 
     @Override
     public List<Room> getRoomsByHotelId(Long id) {

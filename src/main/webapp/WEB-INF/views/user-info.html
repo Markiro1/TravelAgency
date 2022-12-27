@@ -13,10 +13,6 @@
         <br>
         <table class="table">
             <tr>
-                <td>ID:</td>
-                <td><b th:text="${user.id}"></b></td>
-            </tr>
-            <tr>
                 <td>First name:</td>
                 <td><b th:text="${user.firstname}"></b></td>
             </tr>
@@ -43,11 +39,7 @@
                 </td>
             </tr>
         </table>
-        <div>
-            <td><a class="btn btn-info" th:href="@{|/users/${user.id}/update|}">Edit</a></td>
-            <td><a class="btn btn-info" style="margin-left: 5px" th:href="@{|/users/${user.id}/delete|}">Remove</a></td>
-        </div>
-
+        <span><a th:href="@{/users/all}">Go to User's List</a></span>
     </div>
 </div>
 </body>

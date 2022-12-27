@@ -8,7 +8,7 @@
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>New Room</h2>
+    <h2>Create Room</h2>
 </div>
 <br>
 <form class="form-horizontal" th:action="@{/rooms/create}" th:object="${room}" method="post">
@@ -19,7 +19,6 @@
                 <option th:each="hotelName : ${hotelNames}" th:value="${hotelName}" th:text="${hotelName}"/>
             </select>
         </div>
-
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="room-number">Room number:</label>
@@ -37,7 +36,7 @@
                    th:errors="*{price}"></small>
             <br>
             <br>
-            <input type="submit" class="btn btn-info" value="Register"/>
+            <input type="submit" class="btn btn-info" value="Create"/>
             <input type="reset" class="btn btn" value="Clear"/>
         </div>
     </div>

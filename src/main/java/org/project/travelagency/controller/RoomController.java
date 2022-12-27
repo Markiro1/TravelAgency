@@ -7,6 +7,8 @@ import org.project.travelagency.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,13 +56,39 @@ public class RoomController {
     public String read(@PathVariable("room_id") long roomId, Model model) {
         Room room = roomService.readById(roomId);
         model.addAttribute("room", room);
-        return "hotel-info";
+        return "room-info";
     }
 
     @GetMapping("/all")
     public String getAll(Model model) {
         model.addAttribute("rooms", roomService.getAllRooms());
         return "rooms-list";
+    }
+
+    @GetMapping("/{room_id}/update")
+    public String update(@PathVariable("room_id") long roomId, Model model) {
+        Room room = roomService.readById(roomId);
+
+        model.addAttribute("room", room);
+        model.addAttribute("hotelName", room.getHotel().getName());
+        return "update-room";
+    }
+
+    @PostMapping("/{room_id}/update")
+    public String update(@PathVariable("room_id") long roomId,
+                         Model model,
+                         @Validated @ModelAttribute("room") Room room,
+                         BindingResult result) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("room", roomService.readById(roomId));
+            model.addAttribute("hotelName", room.getHotel().getName());
+            return "update-room";
+        }
+        Room r = roomService.readById(roomId);
+        room.setHotel(r.getHotel());
+        roomService.update(room);
+        return "redirect:/rooms/" + roomId + "/read";
     }
 
     @GetMapping("/{room_id}/delete")
