@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
+//@Transactional
 public class RoomDaoImpl implements RoomDao {
 
     private final SessionFactory sessionFactory;
@@ -65,6 +66,19 @@ public class RoomDaoImpl implements RoomDao {
         session.getTransaction().commit();
         session.close();
         return Optional.of(room);
+    }
+
+
+    @Override
+    public List<Room> getRoomsByHotelId(Long id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        List<Room> rooms = session.createQuery("SELECT r FROM Room r WHERE r.hotel.id=: id", Room.class)
+                .setParameter("id", id).list();
+        session.getTransaction().commit();
+        session.close();
+        return rooms.isEmpty() ? new ArrayList<>() : rooms;
     }
 
     @Override

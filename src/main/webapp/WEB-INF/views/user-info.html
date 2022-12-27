@@ -32,6 +32,16 @@
                 <td>Role:</td>
                 <td><b th:text="${user.role.name}"></b></td>
             </tr>
+            <tr th:each="order, iStat: ${user.orders}">
+                <td th:text="${iStat.index + 1}"/>
+                <td th:text="${order.id}"/>
+                <td th:text="${order.hotel.name}"/>
+                <td th:text="${order.checkIn}"/>
+                <td th:text="${order.checkOut}"/>
+                <td>
+                    <a th:href="@{|/orders/${order.id}/delete/users/${user.id}|}">Remove Order</a>
+                </td>
+            </tr>
         </table>
         <div>
             <td><a class="btn btn-info" th:href="@{|/users/${user.id}/update|}">Edit</a></td>

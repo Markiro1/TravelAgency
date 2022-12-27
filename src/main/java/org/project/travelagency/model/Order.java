@@ -33,6 +33,10 @@ public class Order {
     @Column(name = "check_out")
     private LocalDate checkOut;
 
+    @NotNull
+    @Column(name = "amount")
+    private int amount;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -42,8 +46,8 @@ public class Order {
     private Hotel hotel;
 
     @ManyToMany
-    @JoinTable(name = "order_rooms",
+    @JoinTable(name = "reservedRooms",
             joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_id"))
-    private List<Room> rooms;
+            inverseJoinColumns = @JoinColumn(name = "reservedRoom_id"))
+    private List<Room> reservedRooms;
 }

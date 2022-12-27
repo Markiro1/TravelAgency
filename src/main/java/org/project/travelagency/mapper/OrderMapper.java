@@ -12,7 +12,7 @@ public class OrderMapper {
                 .checkOut(order.getCheckOut())
                 .user(order.getUser())
                 .hotel(order.getHotel())
-                .rooms(order.getRooms())
+                .rooms(order.getReservedRooms())
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class OrderMapper {
                 .checkOut(orderDto.getCheckOut())
                 .user(orderDto.getUser())
                 .hotel(orderDto.getHotel())
-                .rooms(orderDto.getRooms())
+                .reservedRooms(orderDto.getRooms())
                 .build();
     }
 }

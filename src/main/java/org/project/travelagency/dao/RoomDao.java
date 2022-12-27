@@ -15,6 +15,8 @@ public interface RoomDao {
 
     Optional<Room> getRoomByNumber(int number);
 
+    List<Room> getRoomsByHotelId(Long id);
+
     Room update(Room room);
 
     void delete(Long id);

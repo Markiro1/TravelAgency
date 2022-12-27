@@ -46,6 +46,12 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.getRoomByNumber(number).orElseThrow(RoomNotFoundException::new);
     }
 
+
+    @Override
+    public List<Room> getRoomsByHotelId(Long id) {
+        return roomDao.getRoomsByHotelId(id);
+    }
+
     @Override
     public Room update(Room room) {
         return roomDao.update(room);

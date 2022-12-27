@@ -35,8 +35,9 @@ public class Room {
     private Hotel hotel;
 
     @ManyToMany
-    @JoinTable(name = "order_rooms",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    @JoinTable(name = "reservedRooms",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservedRoom_id")
+    )
     private List<Order> orders;
 }

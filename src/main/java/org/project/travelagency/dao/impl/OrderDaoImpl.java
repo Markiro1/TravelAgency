@@ -24,7 +24,6 @@ public class OrderDaoImpl implements OrderDao {
     public Order save(Order order) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         session.persist(order);
         session.getTransaction().commit();
         session.close();
@@ -35,7 +34,6 @@ public class OrderDaoImpl implements OrderDao {
     public Order getById(Long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         Order order = session.get(Order.class, id);
         session.getTransaction().commit();
         session.close();
@@ -43,10 +41,10 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Order> getAll() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         List<Order> orders = session.createQuery("from Order").list();
         session.getTransaction().commit();
         session.close();
@@ -54,23 +52,21 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public void delete(Order order) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(order);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
     public Order update(Order order) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         session.update(order);
         session.getTransaction().commit();
         session.close();
         return order;
-    }
-
-    @Override
-    public void delete(Order order) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        session.delete(order);
-        session.getTransaction().commit();
-        session.close();
     }
 }
