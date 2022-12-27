@@ -26,12 +26,12 @@ public class Room {
     @Column(name = "number", nullable = false)
     @Min(value = 1, message = "Room number can not be 0")
     @Max(value = 500, message = "Max allowed room number is 500")
-    private int number;
+    private Integer number;
 
     @Column(name = "price")
     @Min(value = 1, message = "Price can not be 0")
-    @Max(value = 500, message = "Max allowed price is 1000$")
-    private double price;
+    @Max(value = 5000, message = "Max allowed price is 5000$")
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")

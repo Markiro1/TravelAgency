@@ -1,5 +1,6 @@
 package org.project.travelagency.controller;
 
+import org.project.travelagency.model.Country;
 import org.project.travelagency.model.Hotel;
 import org.project.travelagency.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class HotelController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("hotel", new Hotel());
+        model.addAttribute("countries", Country.values());
         return "create-hotel";
     }
 

@@ -18,13 +18,13 @@
         <div class="form-group">
             <label class="col-sm-2 control-label" for="id">ID:</label>
             <div class="col-sm-4">
-                <input class="form-control" disabled id="id" type="text"/>
+                <input class="form-control" disabled id="id" th:field="*{id}" type="text"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label" for="hotel-name">Hotel name:</label>
             <div class="col-sm-4">
-                <input class="form-control" disabled id="hotel-name" type="text"/>
+                <input class="form-control" disabled id="hotel-name" th:field="*{name}" type="text"/>
             </div>
         </div>
         <div class="form-group">
