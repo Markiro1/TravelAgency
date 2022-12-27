@@ -22,7 +22,7 @@
             <th scope="col">Hotel name</th>
             <th scope="col">Number</th>
             <th scope="col">Price</th>
-            <th scope="col" colspan="2">Operations</th>
+            <th scope="col" colspan="3">Operations</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +33,7 @@
             <td th:text="${room.price}"/>
 
             <div>
+                <td><a th:href="@{|/rooms/${room.id}/read|}">Info</a></td>
                 <td><a th:href="@{|/rooms/${room.id}/update|}">Edit</a></td>
                 <td><a th:href="@{|/rooms/${room.id}/delete|}">Remove</a></td>
             </div>

@@ -13,10 +13,6 @@
         <br>
         <table class="table">
             <tr>
-                <td>ID:</td>
-                <td><b th:text="${hotel.id}"></b></td>
-            </tr>
-            <tr>
                 <td>Name:</td>
                 <td><b th:text="${hotel.name}"></b></td>
             </tr>
@@ -30,11 +26,7 @@
             </tr>
 
         </table>
-        <div>
-            <td><a class="btn btn-info" th:href="@{|/hotels/${hotel.id}/update|}">Edit</a></td>
-            <td><a class="btn btn-info" style="margin-left: 5px" th:href="@{|/hotels/${hotel.id}/delete|}">Remove</a></td>
-        </div>
-
+        <span><a th:href="@{/hotels/all}">Go to Hotel's List</a></span>
     </div>
 </div>
 </body>

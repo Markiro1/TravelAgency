@@ -56,7 +56,23 @@ public class HotelController {
     public String update(@PathVariable("hotel_id") long hotelId, Model model) {
         Hotel hotel = hotelService.readById(hotelId);
         model.addAttribute("hotel", hotel);
+        model.addAttribute("countries", Country.values());
         return "update-hotel";
+    }
+
+    @PostMapping("/{hotel_id}/update")
+    public String update(@PathVariable("hotel_id") long hotelId,
+                         Model model,
+                         @Validated @ModelAttribute("hotel") Hotel hotel,
+                         BindingResult result) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("hotel", hotelService.readById(hotelId));
+            model.addAttribute("countries", Country.values());
+            return "update-hotel";
+        }
+        hotelService.update(hotel);
+        return "redirect:/hotels/" + hotelId + "/read";
     }
 
     @GetMapping("/{hotel_id}/delete")
