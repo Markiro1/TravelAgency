@@ -38,7 +38,7 @@ public class Order {
 
     @NotNull
     @Column(name = "amount")
-    private int amount;
+    private double amount;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

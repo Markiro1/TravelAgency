@@ -70,49 +70,66 @@ public class OrderController {
         String dayOut = orderDto.getCheckOut();
         LocalDateTime now = LocalDateTime.now();
 
+        orderDto.setUser(userService.readById(userId));
+
         if (orderDto.getCountry() != null && isValidDates(now.toLocalDate().toString(), dayIn) & isValidDates(dayIn, dayOut)){
 
-            List<Order> orders = orderService.getAllOrders().stream()
-                    .filter(order -> order.getHotel().getName().equals(orderDto.getHotel()))
-                    .filter(order -> !isValidDates(dayOut, order.getCheckIn().minusDays(1L).toString())
-            || !isValidDates(order.getCheckOut().plusDays(1L).toString(), dayIn))
-                    .toList();
+            System.out.println("in 1");
 
-            List<Room> reservedRooms = orders.stream()
-                    .map(Order::getReservedRooms)
-                    .flatMap(List::stream)
-                    .distinct()
-                    .toList();
+            System.out.println("hotel " + orderDto.getHotel());
 
-            List<Room> freeRooms = roomService.getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId())
-                    .stream()
-                    .filter(r -> !reservedRooms.contains(r))
-                    .toList();
+            if (orderDto.getHotel() != null) {
 
-            model.addAttribute("freeRoomsNumber", IntStream.range(1, freeRooms.size() + 1).toArray());
-            model.addAttribute("price", freeRooms.get(0).getPrice());
+                System.out.println("in 2");
 
-            int roomsCount = orderDto.getReservedRoomsCount();
+                List<Order> orders = orderService.getAllOrders().stream()
+                        .filter(order -> order.getHotel().getName().equals(orderDto.getHotel()))
+                        .filter(order -> !isValidDates(dayOut, order.getCheckIn().minusDays(1L).toString())
+                                || !isValidDates(order.getCheckOut().plusDays(1L).toString(), dayIn))
+                        .toList();
 
-            if (roomsCount != 0) {
+                List<Room> reservedRooms = orders.stream()
+                        .map(Order::getReservedRooms)
+                        .flatMap(List::stream)
+                        .distinct()
+                        .toList();
 
-                List<Room> rooms = freeRooms.stream().limit(roomsCount).toList();
+                List<Room> freeRooms = roomService.getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId())
+                        .stream()
+                        .filter(r -> !reservedRooms.contains(r))
+                        .toList();
 
-                double amount = roomsCount * rooms.get(0).getPrice() * (intervalDays(LocalDate.parse(dayIn), LocalDate.parse(dayOut)) + 1);
+                model.addAttribute("freeRoomsNumber", IntStream.range(1, freeRooms.size() + 1).toArray());
+                model.addAttribute("price", freeRooms.get(0).getPrice());
 
-                orderDto.setUser(userService.readById(userId));
-                orderDto.setRooms(rooms);
-                orderDto.setAmount(amount);
-                orderDto.setOrderDate(now);
+                int roomsCount = orderDto.getReservedRoomsCount();
 
-                Order order = orderService.create(orderDto);
-                userService.readById(userId).getOrders().add(order);
-                hotelService.getHotelByName(orderDto.getHotel()).getOrders().add(order);
+                System.out.println("roomsCount " + orderDto.getReservedRoomsCount());
 
-                model.addAttribute("order", orderDto);
+                if (roomsCount > 0) {
 
-                return "order-info";
+                    System.out.println("in 3");
+
+                    List<Room> rooms = freeRooms.stream().limit(roomsCount).toList();
+
+                    double amount = roomsCount * rooms.get(0).getPrice() * (intervalDays(LocalDate.parse(dayIn), LocalDate.parse(dayOut)) + 1);
+
+                    orderDto.setUser(userService.readById(userId));
+                    orderDto.setRooms(rooms);
+                    orderDto.setAmount(amount);
+                    orderDto.setOrderDate(now);
+
+                    Order order = orderService.create(orderDto);
+
+                    model.addAttribute("order", orderDto);
+
+                    System.out.println("out 3");
+
+                    return "order-info";
+                }
             }
+
+            System.out.println("out 2");
         }
 
         //model.addAttribute("message", "Incorrect dates");
@@ -121,6 +138,8 @@ public class OrderController {
         model.addAttribute("countries", hotelService.getAllCountries());
         model.addAttribute("hotels", hotelService.getAllHotels());
         model.addAttribute("user_id", userId);
+
+        System.out.println("out 0");
 
         return "create-order";
     }

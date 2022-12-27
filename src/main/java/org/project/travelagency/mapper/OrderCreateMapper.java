@@ -27,6 +27,7 @@ public class OrderCreateMapper {
                 .user(order.getUser())
                 .hotel(order.getHotel().getName())
                 .rooms(order.getReservedRooms())
+                .amount(order.getAmount())
                 .build();
     }
 
@@ -41,6 +42,7 @@ public class OrderCreateMapper {
                 .user(userService.readById(orderDto.getUser().getId()))
                 .hotel(hotelService.getHotelByName(orderDto.getHotel()))
                 .reservedRooms(orderDto.getRooms())
+                .amount(orderDto.getAmount())
                 .build();
     }
 }

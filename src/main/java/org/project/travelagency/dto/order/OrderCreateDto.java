@@ -7,6 +7,7 @@ import org.project.travelagency.model.Room;
 import org.project.travelagency.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -29,7 +30,7 @@ public class OrderCreateDto {
 
     private User user;
 
-    private List<Room> rooms;
+    private List<Room> rooms = new ArrayList<>();
 
     private int reservedRoomsCount;
 
