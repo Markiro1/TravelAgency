@@ -1,11 +1,13 @@
 package org.project.travelagency.model;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "rooms")
@@ -14,6 +16,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+@ToString
 public class Room {
 
     @Id
@@ -34,10 +37,23 @@ public class Room {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "reservedRooms",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "reservedRoom_id")
     )
     private List<Order> orders;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return id != null && Objects.equals(id, room.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

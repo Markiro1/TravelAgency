@@ -31,5 +31,7 @@ public class OrderCreateDto {
 
     private List<Room> rooms;
 
-    private int amount;
+    private int reservedRoomsCount;
+
+    private double amount;
 }
