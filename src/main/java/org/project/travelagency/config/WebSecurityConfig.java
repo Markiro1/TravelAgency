@@ -1,4 +1,4 @@
-/*package org.project.travelagency.config;
+package org.project.travelagency.config;
 
 import org.project.travelagency.exception.AccessDeniedHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +32,12 @@ public class WebSecurityConfig {
         return http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/user/create-user").permitAll()
+                .antMatchers("/login", "/create-user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .formLogin()
-                .loginPage("/user/login")
+                .loginPage("/auth/login")
                 .permitAll()
                 .and()
                 .logout()
@@ -45,7 +45,6 @@ public class WebSecurityConfig {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
                 .and()
                 .httpBasic()
                 .and().build();
@@ -70,11 +69,12 @@ public class WebSecurityConfig {
     public AccessDeniedHandler accessDeniedHandler() {
         return new AccessDeniedHandlerImpl();
     }
-}*/
+}
+/*
 
 
 
-/*   @Override
+   @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
@@ -98,11 +98,10 @@ public class WebSecurityConfig {
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler());
-    }*//*
+    }
 
 
- */
-/*  @Bean
+  @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
@@ -113,5 +112,6 @@ public class WebSecurityConfig {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
-*//*
+
 */
+
