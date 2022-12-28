@@ -9,24 +9,23 @@
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-4">
     <div>
-        <h2>Info about Hotel</h2>
+        <h2>Info about Room</h2>
         <br>
         <table class="table">
             <tr>
-                <td>Name:</td>
-                <td><b th:text="${hotel.name}"></b></td>
+                <td>Hotel:</td>
+                <td><b th:text="${room.hotel.getName()}"></b></td>
             </tr>
             <tr>
-                <td>Country:</td>
-                <td><b th:text="${hotel.country}"></b></td>
+                <td>Number:</td>
+                <td><b th:text="${room.number}"></b></td>
             </tr>
             <tr>
-                <td>City:</td>
-                <td><b th:text="${hotel.city}"></b></td>
+                <td>Price:</td>
+                <td><b th:text="${room.price}"></b></td>
             </tr>
-
         </table>
-        <span><a th:href="@{/hotels/all}">Go to Hotel's List</a></span>
+        <span><a th:href="@{/rooms/all}">Go to Room's List</a></span>
     </div>
 </div>
 </body>

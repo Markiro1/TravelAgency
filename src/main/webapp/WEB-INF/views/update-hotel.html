@@ -10,29 +10,24 @@
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
 
-    <h2>Update Existing Hotel</h2>
+    <h2>Update Hotel</h2>
 </div>
 <br>
 <div>
-    <form class="form-horizontal" method="post" th:action="@{/hotels/create}" th:object="${hotel}">
-        <div class="form-group">
-            <label class="col-sm-2 control-label" for="id">ID:</label>
-            <div class="col-sm-4">
-                <input class="form-control" disabled id="id" type="text"/>
-            </div>
-        </div>
+    <form class="form-horizontal" th:action="@{|/hotels/${hotel.id}/update|}" th:object="${hotel}" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="hotel-name">Hotel name:</label>
             <div class="col-sm-4">
-                <input class="form-control" disabled id="hotel-name" type="text"/>
+                <input class="form-control" id="hotel-name" th:field="*{name}" type="text"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label" for="country">Country:</label>
             <div class="col-sm-4">
-                <input class="form-control" id="country" th:field="*{country}" type="text"/>
-                <small class="form-text text-muted" th:if="${#fields.hasErrors('country')}"
-                       th:errors="*{country}"></small>
+                <select class="form-control" id="country" name="country">
+                    <option th:each="country : ${countries}" th:value="${country}" th:text="${country.name()
+                            .substring(0, 1) + country.name().substring(1).toLowerCase()}"/>
+                </select>
             </div>
         </div>
         <div class="form-group">

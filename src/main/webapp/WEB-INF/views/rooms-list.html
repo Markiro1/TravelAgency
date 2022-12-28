@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>List of Hotels</title>
+    <title>List of Rooms</title>
 </head>
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-8">
-    <h2>List of Hotels</h2>
-    <form th:action="@{/hotels/create}" method="get">
+    <h2>List of Rooms</h2>
+    <form th:action="@{/rooms/create}" method="get">
         <div align="right">
-            <input class="btn-info btn-lg" type="submit" value="Create new Hotel">
+            <input class="btn-info btn-lg" type="submit" value="Create new Room">
         </div>
     </form>
     <br>
@@ -20,22 +20,22 @@
         <tr>
             <th scope="col">No.</th>
             <th scope="col">Hotel name</th>
-            <th scope="col">Country</th>
-            <th scope="col">City</th>
+            <th scope="col">Number</th>
+            <th scope="col">Price</th>
             <th scope="col" colspan="3">Operations</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="hotel, iStat: ${hotels}">
+        <tr th:each="room, iStat: ${rooms}">
             <th scope="row" th:text="${iStat.index + 1}"/>
-            <td th:text="${hotel.name}"/>
-            <td th:text="${hotel.country}"/>
-            <td th:text="${hotel.city}"/>
+            <td th:text="${room.hotel.name}"/>
+            <td th:text="${room.number}"/>
+            <td th:text="${room.price}"/>
 
             <div>
-                <td><a th:href="@{|/hotels/${hotel.id}/read|}">Info</a></td>
-                <td><a th:href="@{|/hotels/${hotel.id}/update|}">Edit</a></td>
-                <td><a th:href="@{|/hotels/${hotel.id}/delete|}">Remove</a></td>
+                <td><a th:href="@{|/rooms/${room.id}/read|}">Info</a></td>
+                <td><a th:href="@{|/rooms/${room.id}/update|}">Edit</a></td>
+                <td><a th:href="@{|/rooms/${room.id}/delete|}">Remove</a></td>
             </div>
         </tr>
     </table>
