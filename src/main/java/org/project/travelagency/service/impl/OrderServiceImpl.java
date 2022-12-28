@@ -1,12 +1,11 @@
 package org.project.travelagency.service.impl;
 
 import org.project.travelagency.dao.OrderDao;
-import org.project.travelagency.dao.impl.OrderDaoImpl;
 import org.project.travelagency.dto.order.OrderCreateDto;
-import org.project.travelagency.dto.order.OrderDto;
+import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.exception.NullEntityReferenceException;
 import org.project.travelagency.mapper.OrderCreateMapper;
-import org.project.travelagency.mapper.OrderMapper;
+import org.project.travelagency.mapper.OrderUpdateMapper;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +55,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order update(OrderDto orderDto) {
+    public Order update(OrderUpdateDto orderDto) {
         if (orderDto != null) {
-            Order order = OrderMapper.mapToModel(orderDto);
+            Order order = OrderUpdateMapper.mapToModel(orderDto);
             return orderDao.update(order);
         } else {
             throw new NullEntityReferenceException("Order cannot be 'null'");

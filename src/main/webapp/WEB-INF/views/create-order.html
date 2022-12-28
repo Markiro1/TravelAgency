@@ -31,7 +31,7 @@
                 <option value="t11" disabled="disabled" selected="selected">Choose a hotel</option>
                         <span th:each="hotel : ${hotels}">
                                 <option th:text="${hotel.name}" th:value="${hotel.name}"
-                                        th:if="${hotel.country==order.country}" th:selected="${order.hotel==hotel.name}"/>
+                                        th:if="${hotel.country.name()==order.country.name()}" th:selected="${order.hotel==hotel.name}"/>
                         </span>
             </select>
         </div>
@@ -47,10 +47,13 @@
         <label class="col-sm-2 control-label" for="checkOut">Check-Out Date:</label>
         <div class="col-sm-4">
             <input type="date" class="form-control" id="checkOut" th:field="*{checkOut}" />
-<!--            <small class="form-text text-muted" th:text="${message}"></small>-->
         </div>
         <input class="btn btn-info" type="submit" value="Check"/>
     </div>
+    <div class="col-sm-offset-2 col-sm-8">
+        <small class="form-text text-muted" th:text="${message}"></small>
+    </div>
+    <br><br>
     <div class="form-group">
         <label class="col-sm-2 control-label" th:text="|Rooms available: ${freeRoomsNumber.length}|"></label>
         <br><br>
