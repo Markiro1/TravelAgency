@@ -1,14 +1,24 @@
 package org.project.travelagency.controller;
 
+import org.project.travelagency.dao.impl.HotelDaoImpl;
+import org.project.travelagency.dao.impl.OrderDaoImpl;
+import org.project.travelagency.dao.impl.RoomDaoImpl;
+import org.project.travelagency.dao.impl.UserDaoImpl;
 import org.project.travelagency.dto.order.OrderCreateDto;
 import org.project.travelagency.dto.order.OrderDto;
 import org.project.travelagency.mapper.OrderMapper;
+import org.project.travelagency.model.Hotel;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.model.Room;
+import org.project.travelagency.model.User;
 import org.project.travelagency.service.HotelService;
 import org.project.travelagency.service.OrderService;
 import org.project.travelagency.service.RoomService;
 import org.project.travelagency.service.UserService;
+import org.project.travelagency.service.impl.HotelServiceImpl;
+import org.project.travelagency.service.impl.OrderServiceImpl;
+import org.project.travelagency.service.impl.RoomServiceImpl;
+import org.project.travelagency.service.impl.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -119,6 +129,15 @@ public class OrderController {
                     orderDto.setAmount(amount);
                     orderDto.setOrderDate(now);
 
+                    System.out.println("user id " + orderDto.getUser().getId());
+                    System.out.println("rooms " + orderDto.getRooms().size());
+                    System.out.println("amount" + orderDto.getAmount());
+                    System.out.println("hotel id" + hotelService.getHotelByName(orderDto.getHotel()).getId());
+                    System.out.println("country" + orderDto.getCountry());
+                    System.out.println("check in" + orderDto.getCheckIn());
+                    System.out.println("check out" + orderDto.getCheckOut());
+                    System.out.println("date" + orderDto.getOrderDate().toString());
+
                     Order order = orderService.create(orderDto);
 
                     model.addAttribute("order", orderDto);
@@ -207,5 +226,37 @@ public class OrderController {
         if (in.isBlank() || out.isBlank()) return false;
         return intervalDays(LocalDate.parse(in), LocalDate.parse(out)) >= 0;
     }
+
+
+/*    public static void main(String[] args) {
+        UserDaoImpl userDao = new UserDaoImpl();
+        UserServiceImpl userService = new UserServiceImpl(userDao);
+
+        HotelDaoImpl hotelDao = new HotelDaoImpl();
+        HotelServiceImpl hotelService = new HotelServiceImpl(hotelDao);
+
+        RoomDaoImpl roomDao = new RoomDaoImpl();
+        RoomServiceImpl roomService = new RoomServiceImpl(roomDao);
+
+        User user = userService.readById(3L);
+        Hotel hotel = hotelService.readById(2L);
+        Room room1 = roomService.getRoomsByHotelId(2L).get(0);
+
+        List<Room> roomsToReserve = new ArrayList<>();
+        roomsToReserve.add(room1);
+
+        OrderDaoImpl orderDao = new OrderDaoImpl();
+        OrderServiceImpl orderService = new OrderServiceImpl(orderDao);
+        OrderCreateDto orderDto = new OrderCreateDto();
+
+        orderDto.setUser(user);
+        orderDto.setOrderDate(LocalDateTime.now());
+        orderDto.setCheckIn(LocalDateTime.now().toLocalDate().toString());
+        orderDto.setCheckOut(LocalDateTime.now().toLocalDate().plusDays(1L).toString());
+        orderDto.setHotel(hotel.getName());
+        orderDto.setAmount(80.0);
+        orderDto.setRooms(roomsToReserve);
+        orderService.create(orderDto);
+    }*/
 
 }

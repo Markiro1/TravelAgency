@@ -24,7 +24,7 @@ public class OrderDaoImpl implements OrderDao {
     public Order save(Order order) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.persist(order);
+        session.save(order);
         session.getTransaction().commit();
         session.close();
         return order;

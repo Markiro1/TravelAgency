@@ -32,7 +32,7 @@ public class Hotel {
     @Column(name = "city")
     private String city;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     private List<Room> rooms;
 
     @OneToMany(mappedBy = "hotel")

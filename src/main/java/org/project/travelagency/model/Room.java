@@ -37,13 +37,6 @@ public class Room {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "reservedRooms",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "reservedRoom_id")
-    )
-    private List<Order> orders;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
