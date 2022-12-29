@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -29,28 +30,24 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf()
-                .disable()
+        return http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/users/create").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/auth/login", "/users/create").permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
-                .authenticationProvider(authenticationProvider())
                 .formLogin()
-                .loginPage("/auth/login")
-                .permitAll()
-                .defaultSuccessUrl("/auth/home")
+                .loginPage("/auth/login").permitAll()
+                .defaultSuccessUrl("/users/all")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/auth/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
-                .and()
-                .httpBasic()
+                .logoutSuccessUrl("/auth/login")
                 .and().build();
     }
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -59,7 +56,6 @@ public class WebSecurityConfig {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -71,4 +67,3 @@ public class WebSecurityConfig {
         return new AccessDeniedHandlerImpl();
     }
 }
-
