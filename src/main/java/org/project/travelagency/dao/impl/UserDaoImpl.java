@@ -26,10 +26,10 @@ public class UserDaoImpl implements UserDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        User savedUser = (User) session.save(user);
+        session.persist(user);
         session.getTransaction().commit();
         session.close();
-        return savedUser;
+        return user;
     }
 
     @Override
