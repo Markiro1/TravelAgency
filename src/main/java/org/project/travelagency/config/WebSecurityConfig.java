@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                 .formLogin()
                 .loginPage("/auth/login")
                 .permitAll()
+                .defaultSuccessUrl("/auth/home")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/auth/logout")
