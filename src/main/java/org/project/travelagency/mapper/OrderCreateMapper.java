@@ -32,13 +32,12 @@ public class OrderCreateMapper {
     }
 
     public static Order mapToModel(OrderCreateDto orderDto) {
-        UserService userService = new UserServiceImpl(new UserDaoImpl());
         HotelService hotelService = new HotelServiceImpl(new HotelDaoImpl());
         return Order.builder()
                 .orderDate(orderDto.getOrderDate())
                 .checkIn(LocalDate.parse(orderDto.getCheckIn()))
                 .checkOut(LocalDate.parse(orderDto.getCheckOut()))
-                .user(userService.readById(orderDto.getUser().getId()))
+                .user(orderDto.getUser())
                 .hotel(hotelService.getHotelByName(orderDto.getHotel()))
                 .reservedRooms(orderDto.getRooms())
                 .amount(orderDto.getAmount())

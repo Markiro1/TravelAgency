@@ -36,6 +36,9 @@ public class Room {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "reservedRooms")
+    private List<Order> orders;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

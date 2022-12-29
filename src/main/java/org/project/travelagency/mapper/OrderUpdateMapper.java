@@ -2,7 +2,6 @@ package org.project.travelagency.mapper;
 
 import org.project.travelagency.dao.impl.HotelDaoImpl;
 import org.project.travelagency.dao.impl.UserDaoImpl;
-import org.project.travelagency.dto.order.OrderCreateDto;
 import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.service.HotelService;
@@ -28,14 +27,13 @@ public class OrderUpdateMapper {
     }
 
     public static Order mapToModel(OrderUpdateDto orderDto) {
-        UserService userService = new UserServiceImpl(new UserDaoImpl());
         HotelService hotelService = new HotelServiceImpl(new HotelDaoImpl());
         return Order.builder()
                 .id(orderDto.getId())
                 .orderDate(orderDto.getOrderDate())
                 .checkIn(LocalDate.parse(orderDto.getCheckIn()))
                 .checkOut(LocalDate.parse(orderDto.getCheckOut()))
-                .user(userService.readById(orderDto.getUser().getId()))
+                .user(orderDto.getUser())
                 .hotel(hotelService.readById(orderDto.getHotel().getId()))
                 .reservedRooms(orderDto.getRooms())
                 .amount(orderDto.getAmount())
