@@ -174,6 +174,13 @@ public class OrderController {
 
     @GetMapping("/{order_id}/delete/users/{user_id}")
     public String delete(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId) {
+        Order order = orderService.readById(orderId);
+        List<Room> rooms = order.getReservedRooms();
+
+        for (Room room : rooms) {
+            room.getOrders().remove(order);
+            roomService.update(room);
+        }
         orderService.delete(orderId);
         return "redirect:/orders/all/users/" + userId;
     }

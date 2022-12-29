@@ -48,7 +48,7 @@ public class Order {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToMany(targetEntity = Room.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Room.class, fetch = FetchType.EAGER)
     @JoinTable(name = "reserved_rooms",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "reservedRoom_id"))

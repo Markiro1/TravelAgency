@@ -32,7 +32,7 @@ public class WebSecurityConfig {
         return http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("login", "/users/create").permitAll()
+                .antMatchers("/login", "/users/create").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(authenticationProvider())
@@ -42,7 +42,7 @@ public class WebSecurityConfig {
                 .defaultSuccessUrl("/auth/home")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/logout")
+                .logoutSuccessUrl("/auth/logout")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
@@ -71,48 +71,4 @@ public class WebSecurityConfig {
         return new AccessDeniedHandlerImpl();
     }
 }
-/*
-
-
-
-   @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/login", "/users/create")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .defaultSuccessUrl("/home")
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
-                .permitAll()
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler());
-    }
-
-
-  @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
-
-*/
 
