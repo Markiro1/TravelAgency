@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>Update Info</title>
+    <title>Update User</title>
 </head>
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>Update Form</h2>
+    <h2>Update User</h2>
 </div>
+<br>
 <form class="form-horizontal" th:action="@{|/users/${user.id}/update|}" th:object="${user}" method="post">
     <div class="form-group">
         <label class="col-sm-2 control-label" for="first-name">First name:</label>
@@ -52,10 +53,14 @@
             </select>
         </div>
     </div>
-    <div class="col-sm-offset-2 col-sm-8">
-        <input type="submit" class="btn btn-info" value="Update"/>
-        <input type="reset" class="btn btn" value="Clear"/>
-        <input name="id" th:value="*{id}" type="hidden"/>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+            <br>
+            <br>
+            <input type="submit" class="btn btn-info" value="Update"/>
+            <input type="reset" class="btn btn" value="Clear"/>
+            <input name="id" th:value="*{id}" type="hidden"/>
+        </div>
     </div>
 
     <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->

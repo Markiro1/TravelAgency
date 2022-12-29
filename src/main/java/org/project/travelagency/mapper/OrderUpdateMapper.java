@@ -1,45 +1,42 @@
 package org.project.travelagency.mapper;
 
-import org.project.travelagency.dao.HotelDao;
-import org.project.travelagency.dao.UserDao;
 import org.project.travelagency.dao.impl.HotelDaoImpl;
-import org.project.travelagency.dao.impl.RoomDaoImpl;
 import org.project.travelagency.dao.impl.UserDaoImpl;
 import org.project.travelagency.dto.order.OrderCreateDto;
+import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.model.Order;
-import org.project.travelagency.model.Room;
 import org.project.travelagency.service.HotelService;
-import org.project.travelagency.service.RoomService;
 import org.project.travelagency.service.UserService;
 import org.project.travelagency.service.impl.HotelServiceImpl;
-import org.project.travelagency.service.impl.RoomServiceImpl;
 import org.project.travelagency.service.impl.UserServiceImpl;
 
 import java.time.LocalDate;
-import java.util.stream.Collectors;
 
-public class OrderCreateMapper {
-    public static OrderCreateDto mapToDto(Order order) {
-        return OrderCreateDto.builder()
+public class OrderUpdateMapper {
+
+    public static OrderUpdateDto mapToDto(Order order) {
+        return OrderUpdateDto.builder()
+                .id(order.getId())
                 .orderDate(order.getOrderDate())
                 .checkIn(order.getCheckIn().toString())
                 .checkOut(order.getCheckOut().toString())
                 .user(order.getUser())
-                .hotel(order.getHotel().getName())
+                .hotel(order.getHotel())
                 .rooms(order.getReservedRooms())
                 .amount(order.getAmount())
                 .build();
     }
 
-    public static Order mapToModel(OrderCreateDto orderDto) {
+    public static Order mapToModel(OrderUpdateDto orderDto) {
         UserService userService = new UserServiceImpl(new UserDaoImpl());
         HotelService hotelService = new HotelServiceImpl(new HotelDaoImpl());
         return Order.builder()
+                .id(orderDto.getId())
                 .orderDate(orderDto.getOrderDate())
                 .checkIn(LocalDate.parse(orderDto.getCheckIn()))
                 .checkOut(LocalDate.parse(orderDto.getCheckOut()))
                 .user(userService.readById(orderDto.getUser().getId()))
-                .hotel(hotelService.getHotelByName(orderDto.getHotel()))
+                .hotel(hotelService.readById(orderDto.getHotel().getId()))
                 .reservedRooms(orderDto.getRooms())
                 .amount(orderDto.getAmount())
                 .build();

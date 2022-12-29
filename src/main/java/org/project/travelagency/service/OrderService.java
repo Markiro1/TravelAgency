@@ -1,7 +1,7 @@
 package org.project.travelagency.service;
 
 import org.project.travelagency.dto.order.OrderCreateDto;
-import org.project.travelagency.dto.order.OrderDto;
+import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.model.Order;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface OrderService {
 
     List<Order> getAllOrders();
 
-    Order update(OrderDto orderDto);
+    Order update(OrderUpdateDto orderDto);
 
     void delete(Long id);
 }
