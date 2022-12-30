@@ -6,13 +6,21 @@
             <div class="left">
                 <a th:href="@{/}"> <span class="navbar-brand animation fs-4 fw-bold">Travel Agency</span></a>
             </div>
-
-            <div class="text right" style="right: 135px; top: 19px">
-                <span sec:authorize="isAuthenticated()">
-                    Hello, <span style="margin-left: 5px" sec:authentication="name"></span>!
-                </span>
+            <div class="right" style="right: 395px" sec:authorize="hasAuthority('MANAGER')">
+                <form class="right" action="/admin" method="GET">
+                    <button type="submit" class="btn btn-light">admin</button>
+                </form>
             </div>
-
+            <div class="right" style="right: 250px">
+                <form class="right" action="/home" method="GET">
+                    <button type="submit" class="btn btn-light">new order</button>
+                </form>
+            </div>
+            <div class="right" style="right: 135px">
+                <form class="right" action="/orders/all/users" method="GET">
+                    <button type="submit" class="btn btn-light">orders</button>
+                </form>
+            </div>
             <div class="right">
                 <form class="right" action="/auth/logout" method="POST">
                     <button type="submit" class="btn btn-light">Logout</button>
