@@ -2,8 +2,10 @@ package org.project.travelagency.config;
 
 import org.project.travelagency.exception.AccessDeniedHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,8 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableTransactionManagement
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
@@ -24,7 +28,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsService userDetailsService) {
+    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -33,6 +37,8 @@ public class WebSecurityConfig {
         return http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/login", "/users/create").permitAll()
+                .antMatchers(HttpMethod.GET, "/hotels/create/**").hasAuthority("MANAGER")
+                .antMatchers(HttpMethod.POST, "/hotels/create/**").hasAuthority("MANAGER")
                 .anyRequest()
                 .authenticated()
                 .and()

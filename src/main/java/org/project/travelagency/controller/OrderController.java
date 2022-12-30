@@ -74,7 +74,7 @@ public class OrderController {
 
                 List<Order> ordersByHotelAtDates = getOrdersByHotelAtDates(orderService.getAllOrders(), orderDto, dayIn, dayOut);
                 List<Room> reservedRoomsByHotelAtDates = getReservedRoomsByHotelAtDates(ordersByHotelAtDates);
-                List<Room> allRoomsByHotel = roomService.getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId());
+                List<Room> allRoomsByHotel = roomService.getRoomsByHotelId(orderDto.getHotel().getId());
                 List<Room> freeRoomsByHotel = getFreeRoomsByHotelAtDates(reservedRoomsByHotelAtDates, allRoomsByHotel);
 
                 if (freeRoomsByHotel != null) {
@@ -238,36 +238,5 @@ public class OrderController {
                 .toList();
 
     }
-
-/*    public static void main(String[] args) {
-        UserDaoImpl userDao = new UserDaoImpl();
-        UserServiceImpl userService = new UserServiceImpl(userDao);
-
-        HotelDaoImpl hotelDao = new HotelDaoImpl();
-        HotelServiceImpl hotelService = new HotelServiceImpl(hotelDao);
-
-        RoomDaoImpl roomDao = new RoomDaoImpl();
-        RoomServiceImpl roomService = new RoomServiceImpl(roomDao);
-
-        User user = userService.readById(3L);
-        Hotel hotel = hotelService.readById(2L);
-        Room room1 = roomService.getRoomsByHotelId(2L).get(0);
-
-        List<Room> roomsToReserve = new ArrayList<>();
-        roomsToReserve.add(room1);
-
-        OrderDaoImpl orderDao = new OrderDaoImpl();
-        OrderServiceImpl orderService = new OrderServiceImpl(orderDao);
-        OrderCreateDto orderDto = new OrderCreateDto();
-
-        orderDto.setUser(user);
-        orderDto.setOrderDate(LocalDateTime.now());
-        orderDto.setCheckIn(LocalDateTime.now().toLocalDate().toString());
-        orderDto.setCheckOut(LocalDateTime.now().toLocalDate().plusDays(1L).toString());
-        orderDto.setHotel(hotel.getName());
-        orderDto.setAmount(80.0);
-        orderDto.setRooms(roomsToReserve);
-        orderService.create(orderDto);
-    }*/
 
 }
