@@ -17,7 +17,7 @@
         <div class="col-sm-4">
             <select class="form-control" id="country" name="country">
                 <option value="t11" disabled="disabled" selected="selected">Choose a country</option>
-                        <span th:each="country : ${countries}">
+                <span th:each="country : ${countries}">
                                 <option th:text="${country}" th:value="${country}" th:selected="${order.country==country}"/>
                         </span>
             </select>
@@ -29,7 +29,7 @@
         <div class="col-sm-4">
             <select class="form-control" id="hotel" name="hotel">
                 <option value="t11" disabled="disabled" selected="selected">Choose a hotel</option>
-                        <span th:each="hotel : ${hotels}">
+                <span th:each="hotel : ${hotels}">
                                 <option th:text="${hotel.name}" th:value="${hotel.name}"
                                         th:if="${hotel.country.name()==order.country.name()}" th:selected="${order.hotel==hotel.name}"/>
                         </span>
@@ -74,7 +74,6 @@
         <br>
         <input class="btn btn-info" type="submit" value="Create"/>
     </div>
-    <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
 </form>
 </body>
 </html>

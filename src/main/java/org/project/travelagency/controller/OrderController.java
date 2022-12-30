@@ -5,10 +5,12 @@ import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.mapper.OrderUpdateMapper;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.model.Room;
+import org.project.travelagency.security.UserDetailsImpl;
 import org.project.travelagency.service.HotelService;
 import org.project.travelagency.service.OrderService;
 import org.project.travelagency.service.RoomService;
 import org.project.travelagency.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,7 +76,7 @@ public class OrderController {
 
                 List<Order> ordersByHotelAtDates = getOrdersByHotelAtDates(orderService.getAllOrders(), orderDto, dayIn, dayOut);
                 List<Room> reservedRoomsByHotelAtDates = getReservedRoomsByHotelAtDates(ordersByHotelAtDates);
-                List<Room> allRoomsByHotel = roomService.getRoomsByHotelId(orderDto.getHotel().getId());
+                List<Room> allRoomsByHotel = roomService.getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId());
                 List<Room> freeRoomsByHotel = getFreeRoomsByHotelAtDates(reservedRoomsByHotelAtDates, allRoomsByHotel);
 
                 if (freeRoomsByHotel != null) {
@@ -103,9 +105,9 @@ public class OrderController {
 
                     Order order = orderService.create(orderDto);
 
-                    model.addAttribute("order", OrderUpdateMapper.mapToDto(order));
+                    //model.addAttribute("order", OrderUpdateMapper.mapToDto(order));
 
-                    return "order-info";
+                    return "redirect:/orders/" + order.getId() +"/read/users/" + order.getUser().getId();
                 }
             }
         }
@@ -128,8 +130,7 @@ public class OrderController {
     public String read(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId, Model model) {
         userService.readById(userId);
         Order order = orderService.readById(orderId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        model.addAttribute("formatter", formatter);
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         model.addAttribute("order", OrderUpdateMapper.mapToDto(order));
         model.addAttribute("rooms", order.getReservedRooms().stream()
                 .map(r -> r.getNumber().toString() + "   ")
@@ -141,19 +142,25 @@ public class OrderController {
     @GetMapping("/all/users/{user_id}")
     public String getAllByUserId(@PathVariable("user_id") long userId, Model model) {
         List<Order> orders = orderService.readByUserId(userId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        model.addAttribute("formatter", formatter);
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         model.addAttribute("orders", orders);
         model.addAttribute("user", userService.readById(userId));
         return "orders-user";
     }
 
 
+    @GetMapping("/all/users")
+    public String getAllByUser(Authentication authentication) {
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+        System.out.println(user.getId());
+        return "redirect:/orders/all/users/" + user.getId();
+    }
+
+
     @GetMapping("/all")
     public String getAll(Model model) {
         List<Order> orders = orderService.getAllOrders();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        model.addAttribute("formatter", formatter);
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         model.addAttribute("orders", orders);
         return "orders-all";
     }

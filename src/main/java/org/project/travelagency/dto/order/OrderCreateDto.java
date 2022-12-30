@@ -25,7 +25,7 @@ public class OrderCreateDto {
 
     private Country country;
 
-    private Hotel hotel;
+    private String hotel;
 
     private User user;
 

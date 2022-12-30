@@ -8,7 +8,6 @@
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-4">
-  <div>
     <h2>Order Info</h2>
     <br>
     <table class="table">
@@ -18,7 +17,7 @@
       </tr>
       <tr>
         <td>Order Date:</td>
-        <td><b th:text="${order.orderDate.toLocalDate()}"></b></td>
+        <td><b th:text="${order.orderDate.format(formatter)}"></b></td>
       </tr>
       <tr>
         <td>Country:</td>
@@ -49,8 +48,7 @@
         <td><b th:text="|${order.amount} Euro|"></b></td>
       </tr>
     </table>
-    <span><a th:href="@{|/orders/all/users/${order.user.id}|}">Go to All Orders</a></span>
-  </div>
+    </div>
 </div>
 </body>
 </html>

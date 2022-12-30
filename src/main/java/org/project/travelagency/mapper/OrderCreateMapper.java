@@ -15,19 +15,20 @@ public class OrderCreateMapper {
                 .checkIn(order.getCheckIn().toString())
                 .checkOut(order.getCheckOut().toString())
                 .user(order.getUser())
-                .hotel(order.getHotel())
+                .hotel(order.getHotel().getName())
                 .rooms(order.getReservedRooms())
                 .amount(order.getAmount())
                 .build();
     }
 
     public static Order mapToModel(OrderCreateDto orderDto) {
+        HotelService hotelService = new HotelServiceImpl(new HotelDaoImpl());
         return Order.builder()
                 .orderDate(orderDto.getOrderDate())
                 .checkIn(LocalDate.parse(orderDto.getCheckIn()))
                 .checkOut(LocalDate.parse(orderDto.getCheckOut()))
                 .user(orderDto.getUser())
-                .hotel(orderDto.getHotel())
+                .hotel(hotelService.getHotelByName(orderDto.getHotel()))
                 .reservedRooms(orderDto.getRooms())
                 .amount(orderDto.getAmount())
                 .build();
