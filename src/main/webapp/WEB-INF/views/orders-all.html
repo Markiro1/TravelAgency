@@ -25,7 +25,7 @@
     <tr th:each="order, iStat: ${orders}">
       <th scope="row" th:text="${iStat.index + 1}"/>
       <td th:text="${order.id}"/>
-      <td th:text="${order.orderDate.toLocalDate()}"/>
+      <td th:text="${order.orderDate.format(formatter)}"/>
       <td th:text="${order.user.id}"/>
       <td th:text="${order.user.email}"/>
       <div>

@@ -9,11 +9,11 @@
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-8">
     <h2 th:text="|List of ${user.firstName} ${user.lastName} Orders|"></h2>
-    <form th:action="@{|/orders/create/${user.id}|}" method="get">
+<!--    <form th:action="@{|/orders/create/${user.id}|}" method="get">
         <div align="right">
             <input class="btn-info btn-lg" type="submit" value="Create new Order">
         </div>
-    </form>
+    </form>-->
     <br>
     <table class="table">
         <thead>
@@ -28,7 +28,7 @@
         <tr th:each="order, iStat: ${orders}">
             <th scope="row" th:text="${iStat.index + 1}"/>
             <td th:text="${order.id}"/>
-            <td th:text="${order.orderDate.toLocalDate()}"/>
+            <td th:text="${order.orderDate.format(formatter)}"/>
             <div>
                 <td><a th:href="@{|/orders/${order.id}/read/users/${user.id}|}">Info</a></td>
                 <td><a th:href="@{|/orders/${order.id}/delete/users/${user.id}|}">Remove</a></td>

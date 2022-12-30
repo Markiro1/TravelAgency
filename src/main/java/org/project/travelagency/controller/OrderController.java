@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +128,8 @@ public class OrderController {
     public String read(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId, Model model) {
         userService.readById(userId);
         Order order = orderService.readById(orderId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        model.addAttribute("formatter", formatter);
         model.addAttribute("order", OrderUpdateMapper.mapToDto(order));
         model.addAttribute("rooms", order.getReservedRooms().stream()
                 .map(r -> r.getNumber().toString() + "   ")
@@ -138,6 +141,8 @@ public class OrderController {
     @GetMapping("/all/users/{user_id}")
     public String getAllByUserId(@PathVariable("user_id") long userId, Model model) {
         List<Order> orders = orderService.readByUserId(userId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        model.addAttribute("formatter", formatter);
         model.addAttribute("orders", orders);
         model.addAttribute("user", userService.readById(userId));
         return "orders-user";
@@ -147,6 +152,8 @@ public class OrderController {
     @GetMapping("/all")
     public String getAll(Model model) {
         List<Order> orders = orderService.getAllOrders();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        model.addAttribute("formatter", formatter);
         model.addAttribute("orders", orders);
         return "orders-all";
     }
