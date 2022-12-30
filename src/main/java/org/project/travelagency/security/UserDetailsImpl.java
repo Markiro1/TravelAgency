@@ -18,7 +18,7 @@ public class UserDetailsImpl implements UserDetails {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.rolesAndAuthorities = List
-                .of(new SimpleGrantedAuthority("ROLE_+ " + user.getRole().name()));
+                .of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override
