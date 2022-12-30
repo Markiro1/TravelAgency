@@ -7,6 +7,7 @@ import org.project.travelagency.model.Role;
 import org.project.travelagency.model.User;
 import org.project.travelagency.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/create")
@@ -38,8 +41,7 @@ public class UserController {
         userDto.setRole(Role.USER);
         User u = userService.create(userDto);
         User user = userService.readById(u.getId());
-        model.addAttribute("user", UserUpdateMapper.mapToDto(user));
-        return "user-info";
+        return "redirect:/orders/create/" + user.getId();
     }
 
     @GetMapping("/{user_id}/read")
@@ -67,9 +69,6 @@ public class UserController {
     public String update(@PathVariable("user_id") long userId, Model model,
                          @Validated @ModelAttribute("user") UserUpdateDto userDto,
                          BindingResult result) {
-        if (userDto.getPassword().isBlank()) {
-            userDto.setPassword(userService.readById(userId).getPassword());
-        }
         if (result.hasErrors()) {
             model.addAttribute("user", UserUpdateMapper.mapToDto(userService.readById(userId)));
             model.addAttribute("roles", Role.values());

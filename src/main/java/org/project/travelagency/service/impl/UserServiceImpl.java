@@ -59,9 +59,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(UserUpdateDto userDto) {
+        String password;
         if (userDto != null) {
             User user = UserUpdateMapper.mapToModel(userDto);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            if (!user.getPassword().isBlank()){
+                password = passwordEncoder.encode(user.getPassword());
+            } else {
+                password = readById(user.getId()).getPassword();
+            }
+            user.setPassword(password);
             return userDao.update(user);
         } else {
             throw new NullEntityReferenceException("User cannot be 'null'");
