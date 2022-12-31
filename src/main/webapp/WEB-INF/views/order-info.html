@@ -12,12 +12,16 @@
     <br>
     <table class="table">
       <tr>
-        <td>ID:</td>
+        <td>Order ID:</td>
         <td><b th:text="${order.id}"></b></td>
       </tr>
       <tr>
-        <td>Order Date:</td>
+        <td>Booking Date:</td>
         <td><b th:text="${order.orderDate.format(formatter)}"></b></td>
+      </tr>
+      <tr>
+        <td>Client:</td>
+        <td><b th:text="|${order.user.firstName} ${order.user.lastName}|"></b></td>
       </tr>
       <tr>
         <td>Country:</td>
@@ -28,19 +32,19 @@
         <td><b th:text="${order.hotel.name}"></b></td>
       </tr>
       <tr>
-        <td>Price:</td>
-        <td><b th:text="|${order.rooms.get(0).price} Euro|"></b></td>
-      </tr>
-      <tr>
         <td>Rooms:</td>
         <td><b th:text="${rooms}"></b></td>
       </tr>
       <tr>
-        <td>Check-In Date:</td>
+        <td>Price:</td>
+        <td><b th:text="|${order.rooms.get(0).price} Euro|"></b></td>
+      </tr>
+      <tr>
+        <td>Arrival Date:</td>
         <td><b th:text="${order.checkIn}"></b></td>
       </tr>
       <tr>
-        <td>Check-Out Date:</td>
+        <td>Departure Date:</td>
         <td><b th:text="${order.checkOut}"></b></td>
       </tr>
       <tr>
@@ -49,6 +53,5 @@
       </tr>
     </table>
     </div>
-</div>
 </body>
 </html>

@@ -1,16 +1,20 @@
 package org.project.travelagency.controller;
 
+import org.project.travelagency.controller.utils.ControllerUtils;
 import org.project.travelagency.dto.order.OrderCreateDto;
 import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.mapper.OrderUpdateMapper;
 import org.project.travelagency.model.Order;
+import org.project.travelagency.model.Role;
 import org.project.travelagency.model.Room;
+import org.project.travelagency.model.User;
 import org.project.travelagency.security.UserDetailsImpl;
 import org.project.travelagency.service.HotelService;
 import org.project.travelagency.service.OrderService;
 import org.project.travelagency.service.RoomService;
 import org.project.travelagency.service.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -35,11 +38,26 @@ public class OrderController {
     private final RoomService roomService;
 
 
-    public OrderController(UserService userService, OrderService orderService, HotelService hotelService, RoomService roomService) {
+    public OrderController(UserService userService,
+                           OrderService orderService,
+                           HotelService hotelService,
+                           RoomService roomService) {
         this.userService = userService;
         this.orderService = orderService;
         this.hotelService = hotelService;
         this.roomService = roomService;
+    }
+
+
+    @GetMapping("/create")
+    public String createOrder(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userService.findUserByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (user.getRole().equals(Role.MANAGER)) {
+            return "redirect:/admin/orders/create";
+        }
+        return "redirect:/orders/create/" + user.getId();
     }
 
 
@@ -68,20 +86,21 @@ public class OrderController {
         String dayOut = orderDto.getCheckOut();
         LocalDateTime now = LocalDateTime.now();
 
-        orderDto.setUser(userService.readById(userId));
-
-        if (orderDto.getCountry() != null && isValidDates(now.toLocalDate().toString(), dayIn) & isValidDates(dayIn, dayOut)){
+        if (orderDto.getCountry() != null
+                && ControllerUtils.isValidDates(now.toLocalDate().toString(), dayIn)
+                && ControllerUtils.isValidDates(dayIn, dayOut)){
 
             if (orderDto.getHotel() != null) {
 
-                List<Order> ordersByHotelAtDates = getOrdersByHotelAtDates(orderService.getAllOrders(), orderDto, dayIn, dayOut);
-                List<Room> reservedRoomsByHotelAtDates = getReservedRoomsByHotelAtDates(ordersByHotelAtDates);
+                List<Order> ordersByHotelAtDates = ControllerUtils.getOrdersByHotelAtDates(orderService.getAllOrders(), orderDto, dayIn, dayOut);
+                List<Room> reservedRoomsByHotelAtDates = ControllerUtils.getReservedRoomsByHotelAtDates(ordersByHotelAtDates);
                 List<Room> allRoomsByHotel = roomService.getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId());
-                List<Room> freeRoomsByHotel = getFreeRoomsByHotelAtDates(reservedRoomsByHotelAtDates, allRoomsByHotel);
+                List<Room> freeRoomsByHotel = ControllerUtils.getFreeRoomsByHotelAtDates(reservedRoomsByHotelAtDates, allRoomsByHotel);
 
                 if (freeRoomsByHotel != null) {
                     model.addAttribute("freeRoomsNumber", IntStream.range(1, freeRoomsByHotel.size() + 1).toArray());
                     model.addAttribute("price", freeRoomsByHotel.get(0).getPrice());
+                    model.addAttribute("turnOff", true);
                 } else {
                     model.addAttribute("freeRoomsNumber", new ArrayList<>());
                     model.addAttribute("price", null);
@@ -95,7 +114,7 @@ public class OrderController {
                     List<Room> rooms = freeRoomsByHotel.stream().limit(reservedRoomsCount).toList();
 
                     double amount = reservedRoomsCount * rooms.get(0).getPrice() * (
-                            intervalDays(LocalDate.parse(dayIn), LocalDate.parse(dayOut)) + 1
+                            ControllerUtils.intervalDays(LocalDate.parse(dayIn), LocalDate.parse(dayOut)) + 1
                     );
 
                     orderDto.setUser(userService.readById(userId));
@@ -105,15 +124,15 @@ public class OrderController {
 
                     Order order = orderService.create(orderDto);
 
-                    //model.addAttribute("order", OrderUpdateMapper.mapToDto(order));
-
                     return "redirect:/orders/" + order.getId() +"/read/users/" + order.getUser().getId();
                 }
             }
         }
 
 
-        if ((dayIn.isBlank() && !dayOut.isBlank()) || (!dayIn.isBlank() && dayOut.isBlank())) {
+        if ((dayIn.isBlank() && !dayOut.isBlank()) || (!dayIn.isBlank() && dayOut.isBlank())
+                || ((!dayIn.isBlank() && !dayOut.isBlank()) && !ControllerUtils.isValidDates(dayIn, dayOut))
+                || ((!dayIn.isBlank() && !dayOut.isBlank()) && !ControllerUtils.isValidDates(now.toLocalDate().toString(), dayIn))) {
             model.addAttribute("message", "Incorrect dates");
         }
 
@@ -151,8 +170,12 @@ public class OrderController {
 
     @GetMapping("/all/users")
     public String getAllByUser(Authentication authentication) {
-        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-        System.out.println(user.getId());
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userService.findUserByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (user.getRole().equals(Role.MANAGER)) {
+            return "redirect:/orders/all";
+        }
         return "redirect:/orders/all/users/" + user.getId();
     }
 
@@ -197,53 +220,6 @@ public class OrderController {
         }
         orderService.delete(orderId);
         return "redirect:/orders/all/users/" + userId;
-    }
-
-
-    public static int intervalDays(LocalDate in, LocalDate out) {
-        return (int) in.until(out, ChronoUnit.DAYS);
-    }
-
-
-    public static Boolean isValidDates(String in, String out) {
-        if (in.isBlank() || out.isBlank()) return false;
-        System.out.println("intervalDays " + in + ", " + out + ": " + intervalDays(LocalDate.parse(in), LocalDate.parse(out)));
-        return intervalDays(LocalDate.parse(in), LocalDate.parse(out)) >= 0;
-    }
-
-
-    public static  List<Order> getOrdersByHotelAtDates(List<Order> orders,
-                                                       OrderCreateDto orderDto,
-                                                       String dayIn,
-                                                       String dayOut) {
-        return orders.stream()
-                .filter(order -> order.getHotel().getName().equals(orderDto.getHotel()))
-                .filter(order ->
-                        (isValidDates(order.getCheckOut().toString(), dayOut)
-                                && isValidDates(dayIn, order.getCheckOut().toString()))
-                                || (isValidDates(order.getCheckIn().toString(), dayOut)
-                                && isValidDates(dayIn, order.getCheckIn().toString()))
-                )
-                .toList();
-    }
-
-
-    public static List<Room> getReservedRoomsByHotelAtDates(List<Order> ordersByHotelAtDates) {
-        return ordersByHotelAtDates.stream()
-                .map(Order::getReservedRooms)
-                .flatMap(List::stream)
-                .distinct()
-                .toList();
-    }
-
-
-    public static List<Room> getFreeRoomsByHotelAtDates(List<Room> reservedRoomsByHotelAtDates, List<Room> allRoomsByHotel) {
-        return allRoomsByHotel.size() == reservedRoomsByHotelAtDates.size()
-                ? null
-                : allRoomsByHotel.stream()
-                .filter(r -> !reservedRoomsByHotelAtDates.contains(r))
-                .toList();
-
     }
 
 }

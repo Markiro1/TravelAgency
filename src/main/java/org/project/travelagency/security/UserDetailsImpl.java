@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
-
     private final String email;
     private final String password;
     private final List<GrantedAuthority> rolesAndAuthorities;
@@ -55,4 +54,5 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>Create order</title>
+    <title>New order</title>
 </head>
 <body>
 
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>New Order</h2>
+    <h2>Order Form</h2>
 </div>
 <form class="form-horizontal" th:action="@{|/orders/create/${user_id}|}" th:object="${order}" method="post">
     <div class="form-group">
@@ -18,11 +18,11 @@
             <select class="form-control" id="country" name="country">
                 <option value="t11" disabled="disabled" selected="selected">Choose a country</option>
                 <span th:each="country : ${countries}">
-                                <option th:text="${country}" th:value="${country}" th:selected="${order.country==country}"/>
-                        </span>
+                    <option th:text="${country}" th:value="${country}" th:selected="${order.country==country}"/>
+                </span>
             </select>
         </div>
-        <input class="btn btn-info" type="submit" value="Choose"/>
+        <input class="btn btn-info" type="submit" value="Choose" th:unless="${order.country}"/>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="hotel">Hotel:</label>
@@ -30,12 +30,13 @@
             <select class="form-control" id="hotel" name="hotel">
                 <option value="t11" disabled="disabled" selected="selected">Choose a hotel</option>
                 <span th:each="hotel : ${hotels}">
-                                <option th:text="${hotel.name}" th:value="${hotel.name}"
-                                        th:if="${hotel.country.name()==order.country.name()}" th:selected="${order.hotel==hotel.name}"/>
-                        </span>
+                    <option th:text="${hotel.name}" th:value="${hotel.name}"
+                            th:if="${hotel.country==order.country}"
+                            th:selected="${order.hotel==hotel.name}"/>
+                </span>
             </select>
         </div>
-        <input class="btn btn-info" type="submit" value="Choose"/>
+        <input class="btn btn-info" type="submit" value="Choose" th:if="${order.country}" th:unless="${order.hotel}"/>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="checkIn">Check-In Date:</label>
@@ -48,10 +49,10 @@
         <div class="col-sm-4">
             <input type="date" class="form-control" id="checkOut" th:field="*{checkOut}" />
         </div>
-        <input class="btn btn-info" type="submit" value="Check"/>
+        <input class="btn btn-info" type="submit" value="Check" th:if="${order.hotel}" th:unless="${turnOff}"/>
     </div>
     <div class="col-sm-offset-2 col-sm-8">
-        <small class="form-text text-muted" th:text="${message}"></small>
+        <small class="form-text text-muted" style="color: #ee0a0a" th:text="${message}"></small>
     </div>
     <br><br>
     <div class="form-group">

@@ -9,6 +9,7 @@ import org.project.travelagency.mapper.UserUpdateMapper;
 import org.project.travelagency.model.User;
 import org.project.travelagency.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             return user;
         } else {
-            throw new NullEntityReferenceException("User not found");
+            throw new UsernameNotFoundException("User not found");
         }
     }
 

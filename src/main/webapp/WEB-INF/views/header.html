@@ -6,13 +6,13 @@
             <div class="left">
                 <a th:href="@{/}"> <span class="navbar-brand animation fs-4 fw-bold">Travel Agency</span></a>
             </div>
-            <div class="right" style="right: 395px" sec:authorize="hasAuthority('MANAGER')">
+            <div class="right" style="right: 395px" sec:authorize="hasRole('ROLE_MANAGER')">
                 <form class="right" action="/admin" method="GET">
                     <button type="submit" class="btn btn-light">admin</button>
                 </form>
             </div>
             <div class="right" style="right: 250px">
-                <form class="right" action="/home" method="GET">
+                <form class="right" action="/orders/create" method="GET">
                     <button type="submit" class="btn btn-light">new order</button>
                 </form>
             </div>
