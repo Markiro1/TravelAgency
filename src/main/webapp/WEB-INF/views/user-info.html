@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>User Info Page</title>
+    <title>Info about Client</title>
 </head>
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-4">
     <div>
-        <h2>Info about User</h2>
+        <h2>Details</h2>
         <br>
         <table class="table">
             <tr>
@@ -29,6 +29,8 @@
                 <td><b th:text="${user.role.name}"></b></td>
             </tr>
         </table>
+        <span><a th:href="@{|/orders/all/users/${user.id}|}"
+                 th:text="|${user.firstname} ${user.lastname} orders list|"></a></span>
     </div>
 </div>
 </body>

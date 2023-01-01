@@ -25,7 +25,7 @@ public class RoomServiceImpl implements RoomService {
     public void create(Room room) {
         if (roomDao.getAllRooms()
                 .stream()
-                .anyMatch(r -> room.getNumber().equals(r.getNumber())))
+                .anyMatch(room::equals))
             throw new SuchRoomExistsException();
 
         roomDao.create(room);

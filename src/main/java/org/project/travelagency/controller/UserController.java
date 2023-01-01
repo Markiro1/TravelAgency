@@ -5,9 +5,10 @@ import org.project.travelagency.dto.user.UserUpdateDto;
 import org.project.travelagency.mapper.UserUpdateMapper;
 import org.project.travelagency.model.Role;
 import org.project.travelagency.model.User;
+import org.project.travelagency.security.SecurityUser;
 import org.project.travelagency.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +20,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/create")
@@ -58,10 +57,19 @@ public class UserController {
     }
 
     @GetMapping("/{user_id}/update")
-    public String update(@PathVariable("user_id") long userId, Model model) {
+    public String update(@PathVariable("user_id") long userId, Model model,
+                         Authentication authentication) {
         User user = userService.readById(userId);
         model.addAttribute("user", UserUpdateMapper.mapToDto(user));
         model.addAttribute("roles", Role.values());
+
+        SecurityUser auth = (SecurityUser) authentication.getPrincipal();
+
+        boolean isAuthUserAdmin = auth.getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("MANAGER"));
+
+        model.addAttribute("isAuthUserAdmin", isAuthUserAdmin);
         return "update-user";
     }
 
@@ -74,7 +82,13 @@ public class UserController {
             model.addAttribute("roles", Role.values());
             return "update-user";
         }
-        userService.update(userDto);
+        var user = userService.readById(userId);
+        if (user.getRole().name().equals("USER")) {
+            userDto.setRole(Role.USER);
+            userService.update(userDto);
+        } else {
+            userService.update(userDto);
+        }
         return "redirect:/users/" + userId + "/read";
     }
 

@@ -13,7 +13,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUpdateDto {
-
     private Long id;
     private String firstname;
     private String lastname;

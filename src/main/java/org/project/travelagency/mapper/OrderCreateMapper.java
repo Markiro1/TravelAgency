@@ -9,17 +9,6 @@ import org.project.travelagency.service.impl.HotelServiceImpl;
 import java.time.LocalDate;
 
 public class OrderCreateMapper {
-    public static OrderCreateDto mapToDto(Order order) {
-        return OrderCreateDto.builder()
-                .orderDate(order.getOrderDate())
-                .checkIn(order.getCheckIn().toString())
-                .checkOut(order.getCheckOut().toString())
-                .user(order.getUser())
-                .hotel(order.getHotel().getName())
-                .rooms(order.getReservedRooms())
-                .amount(order.getAmount())
-                .build();
-    }
 
     public static Order mapToModel(OrderCreateDto orderDto) {
         HotelService hotelService = new HotelServiceImpl(new HotelDaoImpl());

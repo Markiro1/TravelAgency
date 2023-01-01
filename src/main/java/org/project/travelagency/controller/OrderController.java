@@ -1,20 +1,17 @@
 package org.project.travelagency.controller;
 
-import org.project.travelagency.controller.utils.ControllerUtils;
 import org.project.travelagency.dto.order.OrderCreateDto;
 import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.mapper.OrderUpdateMapper;
 import org.project.travelagency.model.Order;
-import org.project.travelagency.model.Role;
 import org.project.travelagency.model.Room;
-import org.project.travelagency.model.User;
-import org.project.travelagency.security.UserDetailsImpl;
+import org.project.travelagency.security.SecurityUser;
 import org.project.travelagency.service.HotelService;
 import org.project.travelagency.service.OrderService;
 import org.project.travelagency.service.RoomService;
 import org.project.travelagency.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,7 +34,7 @@ public class OrderController {
     private final HotelService hotelService;
     private final RoomService roomService;
 
-
+    @Autowired
     public OrderController(UserService userService,
                            OrderService orderService,
                            HotelService hotelService,
@@ -48,19 +45,6 @@ public class OrderController {
         this.roomService = roomService;
     }
 
-
-    @GetMapping("/create")
-    public String createOrder(Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userService.findUserByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        if (user.getRole().equals(Role.MANAGER)) {
-            return "redirect:/admin/orders/create";
-        }
-        return "redirect:/orders/create/" + user.getId();
-    }
-
-
     @GetMapping("/create/{user_id}")
     public String create(@PathVariable("user_id") long userId, Model model) {
 
@@ -70,7 +54,6 @@ public class OrderController {
         model.addAttribute("countries", hotelService.getAllCountries());
         return "create-order";
     }
-
 
     @PostMapping("/create/{user_id}")
     public String create(@PathVariable("user_id") long userId,
@@ -87,18 +70,27 @@ public class OrderController {
         LocalDateTime now = LocalDateTime.now();
 
         if (orderDto.getCountry() != null
-                && ControllerUtils.isValidDates(now.toLocalDate().toString(), dayIn)
-                && ControllerUtils.isValidDates(dayIn, dayOut)){
+                && orderService.isValidDates(now.toLocalDate().toString(), dayIn)
+                && orderService.isValidDates(dayIn, dayOut)) {
 
             if (orderDto.getHotel() != null) {
 
-                List<Order> ordersByHotelAtDates = ControllerUtils.getOrdersByHotelAtDates(orderService.getAllOrders(), orderDto, dayIn, dayOut);
-                List<Room> reservedRoomsByHotelAtDates = ControllerUtils.getReservedRoomsByHotelAtDates(ordersByHotelAtDates);
-                List<Room> allRoomsByHotel = roomService.getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId());
-                List<Room> freeRoomsByHotel = ControllerUtils.getFreeRoomsByHotelAtDates(reservedRoomsByHotelAtDates, allRoomsByHotel);
+                List<Order> ordersByHotelAtDates = orderService
+                        .getOrdersByHotelAtDates(orderService.getAllOrders(), orderDto, dayIn, dayOut);
+
+                List<Room> reservedRoomsByHotelAtDates = orderService
+                        .getReservedRoomsByHotelAtDates(ordersByHotelAtDates);
+
+                List<Room> allRoomsByHotel = roomService
+                        .getRoomsByHotelId(hotelService.getHotelByName(orderDto.getHotel()).getId());
+
+                List<Room> freeRoomsByHotel = orderService
+                        .getFreeRoomsByHotelAtDates(reservedRoomsByHotelAtDates, allRoomsByHotel);
 
                 if (freeRoomsByHotel != null) {
-                    model.addAttribute("freeRoomsNumber", IntStream.range(1, freeRoomsByHotel.size() + 1).toArray());
+                    model.addAttribute("freeRoomsNumber",
+                            IntStream.range(1, freeRoomsByHotel.size() + 1).toArray());
+
                     model.addAttribute("price", freeRoomsByHotel.get(0).getPrice());
                     model.addAttribute("turnOff", true);
                 } else {
@@ -106,7 +98,6 @@ public class OrderController {
                     model.addAttribute("price", null);
                     model.addAttribute("message", "There are no available rooms");
                 }
-
                 int reservedRoomsCount = orderDto.getReservedRoomsCount();
 
                 if (reservedRoomsCount > 0) {
@@ -114,25 +105,22 @@ public class OrderController {
                     List<Room> rooms = freeRoomsByHotel.stream().limit(reservedRoomsCount).toList();
 
                     double amount = reservedRoomsCount * rooms.get(0).getPrice() * (
-                            ControllerUtils.intervalDays(LocalDate.parse(dayIn), LocalDate.parse(dayOut)) + 1
+                            orderService.intervalDays(LocalDate.parse(dayIn), LocalDate.parse(dayOut)) + 1
                     );
-
                     orderDto.setUser(userService.readById(userId));
                     orderDto.setRooms(rooms);
                     orderDto.setAmount(amount);
                     orderDto.setOrderDate(now);
-
                     Order order = orderService.create(orderDto);
 
-                    return "redirect:/orders/" + order.getId() +"/read/users/" + order.getUser().getId();
+                    return "redirect:/orders/" + order.getId() + "/read/users/" + order.getUser().getId();
                 }
             }
         }
 
-
         if ((dayIn.isBlank() && !dayOut.isBlank()) || (!dayIn.isBlank() && dayOut.isBlank())
-                || ((!dayIn.isBlank() && !dayOut.isBlank()) && !ControllerUtils.isValidDates(dayIn, dayOut))
-                || ((!dayIn.isBlank() && !dayOut.isBlank()) && !ControllerUtils.isValidDates(now.toLocalDate().toString(), dayIn))) {
+                || ((!dayIn.isBlank() && !dayOut.isBlank()) && !orderService.isValidDates(dayIn, dayOut))
+                || ((!dayIn.isBlank() && !dayOut.isBlank()) && !orderService.isValidDates(now.toLocalDate().toString(), dayIn))) {
             model.addAttribute("message", "Incorrect dates");
         }
 
@@ -144,9 +132,11 @@ public class OrderController {
         return "create-order";
     }
 
-
     @GetMapping("/{order_id}/read/users/{user_id}")
-    public String read(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId, Model model) {
+    public String read(@PathVariable("order_id") long orderId,
+                       @PathVariable("user_id") long userId,
+                       Model model) {
+
         userService.readById(userId);
         Order order = orderService.readById(orderId);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -157,7 +147,6 @@ public class OrderController {
         return "order-info";
     }
 
-
     @GetMapping("/all/users/{user_id}")
     public String getAllByUserId(@PathVariable("user_id") long userId, Model model) {
         List<Order> orders = orderService.readByUserId(userId);
@@ -167,18 +156,12 @@ public class OrderController {
         return "orders-user";
     }
 
-
     @GetMapping("/all/users")
     public String getAllByUser(Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userService.findUserByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        if (user.getRole().equals(Role.MANAGER)) {
-            return "redirect:/orders/all";
-        }
+        SecurityUser user = (SecurityUser) authentication.getPrincipal();
+        System.out.println(user.getId());
         return "redirect:/orders/all/users/" + user.getId();
     }
-
 
     @GetMapping("/all")
     public String getAll(Model model) {
@@ -188,18 +171,22 @@ public class OrderController {
         return "orders-all";
     }
 
-
     @GetMapping("/{order_id}/update/users/{user_id}")
-    public String update(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId, Model model) {
+    public String update(@PathVariable("order_id") long orderId,
+                         @PathVariable("user_id") long userId,
+                         Model model) {
+
         Order order = orderService.readById(orderId);
         model.addAttribute("order", OrderUpdateMapper.mapToDto(order));
         return "update-order";
     }
 
-
     @PostMapping("/{order_id}/update/users/{user_id}")
-    public String update(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId,
-                         @Validated @ModelAttribute("orderDto") OrderUpdateDto orderDto, BindingResult result) {
+    public String update(@PathVariable("order_id") long orderId,
+                         @PathVariable("user_id") long userId,
+                         @Validated @ModelAttribute("orderDto") OrderUpdateDto orderDto,
+                         BindingResult result) {
+
         if (result.hasErrors()) {
             orderDto.setUser(userService.readById(userId));
             return "update-order";
@@ -208,9 +195,10 @@ public class OrderController {
         return "redirect:/orders/all/users/" + userId;
     }
 
-
     @GetMapping("/{order_id}/delete/users/{user_id}")
-    public String delete(@PathVariable("order_id") long orderId, @PathVariable("user_id") long userId) {
+    public String delete(@PathVariable("order_id") long orderId,
+                         @PathVariable("user_id") long userId) {
+
         Order order = orderService.readById(orderId);
         List<Room> rooms = order.getReservedRooms();
 
@@ -219,7 +207,6 @@ public class OrderController {
             roomService.update(room);
         }
         orderService.delete(orderId);
-        return "redirect:/orders/all/users/" + userId;
+        return "redirect:/orders/all";
     }
-
 }

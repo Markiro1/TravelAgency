@@ -1,13 +1,10 @@
 package org.project.travelagency.mapper;
 
 import org.project.travelagency.dao.impl.HotelDaoImpl;
-import org.project.travelagency.dao.impl.UserDaoImpl;
 import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.model.Order;
 import org.project.travelagency.service.HotelService;
-import org.project.travelagency.service.UserService;
 import org.project.travelagency.service.impl.HotelServiceImpl;
-import org.project.travelagency.service.impl.UserServiceImpl;
 
 import java.time.LocalDate;
 

@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>List of Rooms</title>
+    <title>Available Rooms</title>
 </head>
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-8">
-    <h2>List of Rooms</h2>
+    <h2>Rooms List</h2>
+    <h5>All available rooms in each hotel</h5>
     <form th:action="@{/rooms/create}" method="get">
         <div align="right">
-            <input class="btn-info btn-lg" type="submit" value="Create new Room">
+            <input class="btn-info btn-lg" type="submit" value="Create a new room">
         </div>
     </form>
     <br>
@@ -39,6 +40,8 @@
             </div>
         </tr>
     </table>
+    <br>
+    <span><a th:href="@{/home}">Return to home page</a></span>
 </div>
 </body>
 </html>

@@ -8,10 +8,13 @@
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>Something went wrong</h2>
+    <h2>Access denied</h2>
+    <h5>Manager's rights required</h5>
+    <br>
+    <span><a th:href="@{/home}">Return to home page</a></span>
 </div>
 <br>
-<h1 style="margin: 0 auto; width: max-content" th:text="${code}"/>
-<h2 style="margin: 0 auto; width: max-content" th:text="${message}"/>
+<h1 style="margin: 0 auto; width: max-content" th:text="${code}" />
+<h2 style="margin: 0 auto; width: max-content" th:text="${message}" />
 </body>
 </html>

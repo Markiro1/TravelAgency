@@ -3,32 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>List of Users</title>
+    <title>Clients list</title>
 </head>
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-8">
-    <h2>List of Users</h2>
-    <form th:action="@{/users/create}" method="get">
-        <div align="right">
-            <input class="btn-info btn-lg" type="submit" value="Create new User">
-        </div>
-    </form>
+    <h2>Clients List</h2>
+    <h5>Contacts details about all clients</h5>
+    <br>
     <br>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">No.</th>
-            <th scope="col">ID</th>
             <th scope="col">Full name</th>
             <th scope="col">E-mail</th>
-            <th scope="col" colspan="4"></th>
+            <th scope="col" colspan="3">Operations</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user, iStat: ${users}">
             <th scope="row" th:text="${iStat.index + 1}"/>
-            <td th:text="${user.id}"/>
             <td th:text="${user.firstName + ' ' + user.lastName}"/>
             <td th:text="${user.email}"/>
 
@@ -36,10 +31,11 @@
                 <td><a th:href="@{|/users/${user.id}/read|}">Info</a></td>
                 <td><a th:href="@{|/users/${user.id}/update|}">Edit</a></td>
                 <td><a th:href="@{|/users/${user.id}/delete|}">Remove</a></td>
-                <td><a th:href="@{|/orders/all/users/${user.id}|}">Orders</a></td>
             </div>
         </tr>
     </table>
+    <br>
+    <span><a th:href="@{/home}">Return to home page</a></span>
 </div>
 </body>
 </html>
