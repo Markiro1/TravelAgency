@@ -1,5 +1,6 @@
 package org.project.travelagency.security;
 
+import lombok.Getter;
 import org.project.travelagency.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,16 +9,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class UserDetailsImpl implements UserDetails {
+@Getter
+public class SecurityUser implements UserDetails {
+
+    private final long id;
     private final String email;
     private final String password;
     private final List<GrantedAuthority> rolesAndAuthorities;
 
-    public UserDetailsImpl(User user) {
+    public SecurityUser(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.rolesAndAuthorities = List
-                .of(new SimpleGrantedAuthority(user.getRole().name()));
+        this.rolesAndAuthorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override
@@ -54,5 +58,4 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

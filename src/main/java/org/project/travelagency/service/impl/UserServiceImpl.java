@@ -54,16 +54,23 @@ public class UserServiceImpl implements UserService {
         return userDao.getAll();
     }
 
+    @Override
     public Optional<User> findUserByEmail(String email) {
         return userDao.findByEmail(email);
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
+
 
     @Override
     public User update(UserUpdateDto userDto) {
         String password;
         if (userDto != null) {
             User user = UserUpdateMapper.mapToModel(userDto);
-            if (!user.getPassword().isBlank()){
+            if (!user.getPassword().isBlank()) {
                 password = passwordEncoder.encode(user.getPassword());
             } else {
                 password = readById(user.getId()).getPassword();

@@ -3,7 +3,9 @@ package org.project.travelagency.service;
 import org.project.travelagency.dto.order.OrderCreateDto;
 import org.project.travelagency.dto.order.OrderUpdateDto;
 import org.project.travelagency.model.Order;
+import org.project.travelagency.model.Room;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
@@ -19,4 +21,14 @@ public interface OrderService {
     Order update(OrderUpdateDto orderDto);
 
     void delete(Long id);
+
+    int intervalDays(LocalDate in, LocalDate out);
+
+    Boolean isValidDates(String in, String out);
+
+    List<Order> getOrdersByHotelAtDates(List<Order> orders, OrderCreateDto orderDto, String dayIn, String dayOut);
+
+    List<Room> getReservedRoomsByHotelAtDates(List<Order> ordersByHotelAtDates);
+
+    List<Room> getFreeRoomsByHotelAtDates(List<Room> reservedRoomsByHotelAtDates, List<Room> allRoomsByHotel);
 }

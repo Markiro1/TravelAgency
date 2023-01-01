@@ -1,5 +1,7 @@
 package org.project.travelagency.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -30,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ModelAndView accessDeniedExceptionHandler(HttpServletRequest request,
-                                                     Exception exception) {
+                                                     AccessDeniedException exception) {
         return getModelAndView(request, HttpStatus.FORBIDDEN, exception);
     }
 
@@ -41,42 +45,45 @@ public class GlobalExceptionHandler {
         return getModelAndView(request, HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
-    private ModelAndView getModelAndView(HttpServletRequest request,
-                                         HttpStatus httpStatus,
-                                         Exception exception) {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("code",
-                httpStatus.value() + " / " + httpStatus.getReasonPhrase());
-
-        modelAndView.addObject("message", exception.getMessage());
-        return modelAndView;
-    }
-
     @ExceptionHandler(HotelNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ModelAndView hotelNotFoundExceptionHandler(HttpServletRequest request,
-                                                      EntityNotFoundException exception) {
+                                                      HotelNotFoundException exception) {
         return getModelAndView(request, HttpStatus.NOT_FOUND, exception);
     }
 
     @ExceptionHandler(SuchHotelExistsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ModelAndView suchHotelExistsExceptionHandler(HttpServletRequest request,
-                                                        EntityNotFoundException exception) {
+                                                        SuchHotelExistsException exception) {
         return getModelAndView(request, HttpStatus.CONFLICT, exception);
     }
 
     @ExceptionHandler(RoomNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ModelAndView roomNotFoundExceptionHandler(HttpServletRequest request,
-                                                     EntityNotFoundException exception) {
+                                                     RoomNotFoundException exception) {
         return getModelAndView(request, HttpStatus.NOT_FOUND, exception);
     }
 
     @ExceptionHandler(SuchRoomExistsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ModelAndView suchRoomExistsExceptionHandler(HttpServletRequest request,
-                                                       EntityNotFoundException exception) {
+                                                       SuchRoomExistsException exception) {
         return getModelAndView(request, HttpStatus.CONFLICT, exception);
+    }
+
+    private ModelAndView getModelAndView(HttpServletRequest request,
+                                         HttpStatus httpStatus,
+                                         Exception exception) {
+
+        logger.error("Exception raised = {} :: URL = {}", exception.getMessage(), request.getRequestURL());
+
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("code",
+                httpStatus.value() + " / " + httpStatus.getReasonPhrase());
+
+        modelAndView.addObject("message", exception.getMessage());
+        return modelAndView;
     }
 }

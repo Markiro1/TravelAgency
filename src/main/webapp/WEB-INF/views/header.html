@@ -1,25 +1,9 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
             <div class="left">
-                <a th:href="@{/}"> <span class="navbar-brand animation fs-4 fw-bold">Travel Agency</span></a>
-            </div>
-            <div class="right" style="right: 395px" sec:authorize="hasRole('ROLE_MANAGER')">
-                <form class="right" action="/admin" method="GET">
-                    <button type="submit" class="btn btn-light">admin</button>
-                </form>
-            </div>
-            <div class="right" style="right: 250px">
-                <form class="right" action="/orders/create" method="GET">
-                    <button type="submit" class="btn btn-light">new order</button>
-                </form>
-            </div>
-            <div class="right" style="right: 135px">
-                <form class="right" action="/orders/all/users" method="GET">
-                    <button type="submit" class="btn btn-light">orders</button>
-                </form>
+                <a th:href="@{/home}"> <span class="navbar-brand animation fs-4 fw-bold">Travel Agency</span></a>
             </div>
             <div class="right">
                 <form class="right" action="/auth/logout" method="POST">
@@ -28,7 +12,6 @@
             </div>
         </div>
     </nav>
-
     <style>
         @import url(https://fonts.googleapis.com/css?family=Open+Sans:600);
 

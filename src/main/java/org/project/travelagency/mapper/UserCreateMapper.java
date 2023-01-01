@@ -14,14 +14,4 @@ public class UserCreateMapper {
                 .role(userDto.getRole())
                 .build();
     }
-
-    public static UserCreateDto mapToDto(User user) {
-        UserCreateDto userCreateDto = new UserCreateDto();
-        userCreateDto.setFirstname(user.getFirstName());
-        userCreateDto.setLastname(user.getLastName());
-        userCreateDto.setEmail(user.getEmail());
-        userCreateDto.setPassword(user.getPassword());
-        userCreateDto.setRole(user.getRole());
-        return userCreateDto;
-    }
 }

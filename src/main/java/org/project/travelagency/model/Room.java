@@ -42,13 +42,12 @@ public class Room {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
-        Room room = (Room) o;
-        return id != null && Objects.equals(id, room.id);
+        if (!(o instanceof Room room)) return false;
+        return Objects.equals(number, room.number) && Objects.equals(hotel, room.hotel);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(number, hotel);
     }
 }

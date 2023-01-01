@@ -8,13 +8,14 @@
 <body>
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>Create Room</h2>
+    <h2>Create a new room</h2>
+    <h5>Choose hotel, set room number and price</h5>
 </div>
 <br>
 <form class="form-horizontal" th:action="@{/rooms/create}" th:object="${room}" method="post">
     <div class="form-group">
         <label class="col-sm-2 control-label" for="hotelName">Hotel name:</label>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <select class="form-control" name="hotelName" id="hotelName">
                 <option th:each="hotelName : ${hotelNames}" th:value="${hotelName}" th:text="${hotelName}"/>
             </select>
@@ -22,22 +23,18 @@
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="room-number">Room number:</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" th:field="*{number}" id="room-number"/>
-            <small class="form-text text-muted" th:if="${#fields.hasErrors('number')}"
-                   th:errors="*{number}"></small>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" th:field="*{number}" id="room-number" required/>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="price">Price:</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" th:field="*{price}" id="price"/>
-            <small class="form-text text-muted" th:if="${#fields.hasErrors('price')}"
-                   th:errors="*{price}"></small>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" th:field="*{price}" id="price" required/>
             <br>
             <br>
-            <input type="submit" class="btn btn-info" value="Create"/>
-            <input type="reset" class="btn btn" value="Clear"/>
+            <input type="submit" style="width:80px" class="btn btn-info" value="Create"/>
+            <input type="reset" style="width:80px" class="btn btn" value="Clear"/>
         </div>
     </div>
 </form>

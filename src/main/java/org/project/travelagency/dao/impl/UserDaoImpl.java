@@ -68,6 +68,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        User user = session.createQuery("SELECT u FROM User u WHERE u.email=: email", User.class)
+                .setParameter("email", email).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return user;
+    }
+
+    @Override
     public User update(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();

@@ -9,41 +9,36 @@
 
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-
-    <h2>Update Room</h2>
+    <h2>Edit Room</h2>
+    <h5>Available to change room's credentials</h5>
 </div>
 <br>
 <div>
     <form class="form-horizontal" th:action="@{|/rooms/${room.id}/update|}" th:object="${room}" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="hotelName">Hotel name:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control"  th:value="${hotelName}" disabled id="hotelName"/>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" th:value="${hotelName}" disabled id="hotelName"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label" for="room-number">Room number:</label>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <input type="text" class="form-control" th:field="*{number}" id="room-number"/>
-                <small class="form-text text-muted" th:if="${#fields.hasErrors('number')}"
-                       th:errors="*{number}"></small>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label" for="price">Price:</label>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <input type="text" class="form-control" th:field="*{price}" id="price"/>
-                <small class="form-text text-muted" th:if="${#fields.hasErrors('number')}"
-                       th:errors="*{number}"></small>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-8">
                 <br>
-                <br>
-                <input class="btn btn-info" type="submit" value="Update"/>
-                <input class="btn btn" type="reset" value="Clear"/>
+                <input class="btn btn-info" type="submit" style="width:80px" value="Update"/>
+                <input class="btn btn" type="reset" style="width:80px; margin-left: 5px" value="Clear"/>
                 <input name="id" th:value="*{id}" type="hidden"/>
             </div>
         </div>

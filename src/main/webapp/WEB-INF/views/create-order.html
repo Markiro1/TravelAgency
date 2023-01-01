@@ -1,79 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>New order</title>
+    <title>Create order</title>
 </head>
 <body>
-
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
-    <h2>Order Form</h2>
+    <h2>Hotel Booking</h2>
 </div>
+<br>
 <form class="form-horizontal" th:action="@{|/orders/create/${user_id}|}" th:object="${order}" method="post">
+
     <div class="form-group">
         <label class="col-sm-2 control-label" for="country">Country:</label>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <select class="form-control" id="country" name="country">
                 <option value="t11" disabled="disabled" selected="selected">Choose a country</option>
                 <span th:each="country : ${countries}">
-                    <option th:text="${country}" th:value="${country}" th:selected="${order.country==country}"/>
-                </span>
+                                <option th:text="${country}" th:value="${country}"
+                                        th:selected="${order.country==country}"/>
+                        </span>
             </select>
         </div>
-        <input class="btn btn-info" type="submit" value="Choose" th:unless="${order.country}"/>
+        <input class="btn btn-info" style="width:75px" type="submit" value="Choose"/>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="hotel">Hotel:</label>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <select class="form-control" id="hotel" name="hotel">
                 <option value="t11" disabled="disabled" selected="selected">Choose a hotel</option>
                 <span th:each="hotel : ${hotels}">
-                    <option th:text="${hotel.name}" th:value="${hotel.name}"
-                            th:if="${hotel.country==order.country}"
-                            th:selected="${order.hotel==hotel.name}"/>
-                </span>
+                                <option th:text="${hotel.name}" th:value="${hotel.name}"
+                                        th:if="${hotel.country.name()==order.country.name()}"
+                                        th:selected="${order.hotel==hotel.name}"/>
+                        </span>
             </select>
         </div>
-        <input class="btn btn-info" type="submit" value="Choose" th:if="${order.country}" th:unless="${order.hotel}"/>
+        <input class="btn btn-info" style="width:75px" type="submit" value="Choose"/>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="checkIn">Check-In Date:</label>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <input type="date" class="form-control" id="checkIn" th:field="*{checkIn}"/>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="checkOut">Check-Out Date:</label>
-        <div class="col-sm-4">
-            <input type="date" class="form-control" id="checkOut" th:field="*{checkOut}" />
+        <div class="col-sm-3">
+            <input type="date" class="form-control" id="checkOut" th:field="*{checkOut}"/>
         </div>
-        <input class="btn btn-info" type="submit" value="Check" th:if="${order.hotel}" th:unless="${turnOff}"/>
+        <input class="btn btn-info" style="width:75px" type="submit" value="Check"/>
     </div>
     <div class="col-sm-offset-2 col-sm-8">
-        <small class="form-text text-muted" style="color: #ee0a0a" th:text="${message}"></small>
+        <small class="form-text text-muted" th:text="${message}"></small>
     </div>
-    <br><br>
+    <br>
+    <br>
     <div class="form-group">
         <label class="col-sm-2 control-label" th:text="|Rooms available: ${freeRoomsNumber.length}|"></label>
         <br><br>
         <label class="col-sm-2 control-label" th:text="|Price per room: ${price} Euro|"></label>
         <br><br>
-        <label class="col-sm-2 control-label" for="rooms">Choose number of rooms</label>
-        <div class="col-sm-4">
+        <label class="col-sm-2 control-label" for="rooms">Choose room's number</label>
+        <div class="col-sm-3">
             <select class="form-control" id="rooms" name="reservedRoomsCount">
                         <span th:each="room : ${freeRoomsNumber}">
-                                <option th:text="${room}" th:value="${room}" th:selected="${order.reservedRoomsCount==room}"/>
+                                <option th:text="${room}" th:value="${room}"
+                                        th:selected="${order.reservedRoomsCount==room}"/>
                         </span>
             </select>
         </div>
-    </div>
-
-    <div class="col-sm-offset-2 col-sm-8">
-        <br>
-        <br>
-        <input class="btn btn-info" type="submit" value="Create"/>
+        <input class="btn btn-info" style="width:75px" type="submit" value="Create"/>
     </div>
 </form>
 </body>
