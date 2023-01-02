@@ -18,13 +18,19 @@ public enum Country {
     ITALY("Italy"),
     LUXEMBOURG("Luxembourg"),
     MONACO("Monaco"),
+    ROMANIA("Romania"),
     SPAIN("Spain"),
     SWEDEN("Sweden"),
-    SWITZERLAND("Switzerland");
+    SWITZERLAND("Switzerland"),
+    TURKEY("Turkey");
 
     private String country;
 
     Country(String country) {
         this.country = country;
+    }
+
+    public String getUrl() {
+        return country;
     }
 }
