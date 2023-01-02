@@ -9,12 +9,10 @@
 <div th:replace="header"></div>
 <div class="col-md-offset-2">
     <h2>Hotel Booking</h2>
-    <form class="form-group" th:action="@{|/orders/create/${user_id}|}" method="GET">
-        <input class="btn btn-info btn-md" type="submit" value="New Search"/>
-    </form>
+    <h5><a th:href="@{|/orders/create/${user_id}|}">Type to refresh form or book a new hotel</a></h5>
 </div>
+<br>
 <form class="form-horizontal" th:action="@{|/orders/create/${user_id}|}" th:object="${order}" method="post">
-    <br><br>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="country">Country:</label>
         <div class="col-sm-3">
